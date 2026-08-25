@@ -3,15 +3,7 @@
   "name": "hosteldowntownlm",
   "compatibility_date": "2026-08-20",
   "assets": {
-    "directory": ".",
-    "exclude": [
-      ".git/**",
-      ".github/**",
-      ".gitignore",
-      "*.py",
-      "*.md",
-      "*.log"
-    ]
+    "directory": "."
   },
   "observability": {
     "enabled": true
