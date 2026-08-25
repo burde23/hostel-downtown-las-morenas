@@ -135,3 +135,51 @@
         margin-bottom: 0.75rem !important;
     }
 }
+
+
+/* ==========================================================================
+   PERFECT ABOUT SECTION MOBILE DISPLAY & RESPONSIVE TYPOGRAPHY
+   ========================================================================== */
+
+#about {
+    padding-top: 6rem !important;
+    padding-bottom: 6rem !important;
+}
+
+.hero-about-heading {
+    font-size: 2.3rem !important;
+    line-height: 1.25 !important;
+    letter-spacing: 0.03em !important;
+    color: #FFFFFF !important;
+}
+
+@media (max-width: 767.98px) {
+    #about {
+        padding-top: 5.5rem !important;
+        padding-bottom: 5.5rem !important;
+    }
+    
+    .hero-about-heading {
+        font-size: 1.45rem !important;
+        line-height: 1.35 !important;
+        margin-bottom: 1.25rem !important;
+        word-break: normal !important;
+        overflow-wrap: break-word !important;
+    }
+    
+    #about .lead {
+        font-size: 1.02rem !important;
+        line-height: 1.65 !important;
+        margin-bottom: 1.25rem !important;
+    }
+    
+    #about p {
+        font-size: 0.92rem !important;
+        line-height: 1.65 !important;
+        margin-bottom: 1.75rem !important;
+    }
+
+    #about .pe-lg-6 {
+        padding-right: 0 !important;
+    }
+}
