@@ -118,3 +118,43 @@
         margin-top: 0.85rem !important;
     }
 }
+
+
+/* ==========================================================================
+   ABOUT SECTION MOBILE RESPONSIVE EXPANSION
+   ========================================================================== */
+
+#about {
+    padding-top: 5rem !important;
+    padding-bottom: 5rem !important;
+}
+
+@media (max-width: 767.98px) {
+    #about {
+        padding-top: 4.5rem !important;
+        padding-bottom: 4.5rem !important;
+    }
+    
+    #about h2 {
+        font-size: 1.85rem !important;
+        line-height: 1.25 !important;
+        margin-bottom: 1.5rem !important;
+        letter-spacing: 0.02em !important;
+    }
+    
+    #about .lead {
+        font-size: 1.05rem !important;
+        line-height: 1.65 !important;
+        margin-bottom: 1.25rem !important;
+    }
+    
+    #about p.mb-6 {
+        font-size: 0.95rem !important;
+        line-height: 1.65 !important;
+        margin-bottom: 2rem !important;
+    }
+
+    #about .pe-lg-6 {
+        padding-right: 0 !important;
+    }
+}
