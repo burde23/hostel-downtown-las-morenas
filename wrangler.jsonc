@@ -1,9 +1,17 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "hostel-downtown-las-morenas",
+  "name": "hosteldowntownlm",
   "compatibility_date": "2026-08-20",
   "assets": {
-    "directory": "."
+    "directory": ".",
+    "exclude": [
+      ".git/**",
+      ".github/**",
+      ".gitignore",
+      "*.py",
+      "*.md",
+      "*.log"
+    ]
   },
   "observability": {
     "enabled": true
