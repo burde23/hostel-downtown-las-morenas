@@ -2,8 +2,10 @@
 
 
 
+
+
 /* ==========================================================================
-   PURE HERO DESIGN (LOGO + NEIGHBORHOOD TAG ONLY - NO PROMO CARDS)
+   PURE HERO DESIGN (LOGO + NEIGHBORHOOD TAG ONLY - ZERO PROMO CARDS)
    ========================================================================== */
 
 #hero, 
@@ -59,7 +61,7 @@
 
 /* Full Logo Styling */
 #heroCarousel .hero-full-logo {
-    max-height: 180px !important;
+    max-height: 185px !important;
     width: auto;
     filter: drop-shadow(0px 6px 20px rgba(0, 0, 0, 0.9)) !important;
     transition: transform 0.3s ease, max-height 0.3s ease !important;
