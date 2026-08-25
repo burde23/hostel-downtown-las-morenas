@@ -8,58 +8,10 @@
 
 
 
-/* ==========================================================================
-   ABOUT SECTION MOBILE RESPONSIVE EXPANSION & FULL HEADING FIX
-   ========================================================================== */
-
-#about {
-    padding-top: 6.5rem !important;
-    padding-bottom: 6.5rem !important;
-}
-
-.hero-about-heading {
-    font-size: 2.5rem !important;
-    line-height: 1.25 !important;
-    letter-spacing: 0.03em !important;
-    color: #FFFFFF !important;
-}
-
-.hero-about-heading .text-warning {
-    color: #C6A664 !important;
-}
-
-@media (max-width: 767.98px) {
-    #about {
-        padding-top: 6rem !important;
-        padding-bottom: 6rem !important;
-    }
-    
-    .hero-about-heading {
-        font-size: 1.65rem !important;
-        line-height: 1.35 !important;
-        margin-bottom: 2rem !important;
-    }
-    
-    #about .lead {
-        font-size: 1.05rem !important;
-        line-height: 1.7 !important;
-        margin-bottom: 1.5rem !important;
-    }
-    
-    #about p {
-        font-size: 0.95rem !important;
-        line-height: 1.7 !important;
-        margin-bottom: 2rem !important;
-    }
-
-    #about .pe-lg-6 {
-        padding-right: 0 !important;
-    }
-}
 
 
 /* ==========================================================================
-   ELEGANT PROPORTIONAL HERO DESIGN & LUXURY BADGES
+   TIMES NEW ROMAN ELEGANT HERO DESIGN
    ========================================================================== */
 
 #hero, 
@@ -90,7 +42,7 @@
     z-index: 1 !important;
 }
 
-/* Balanced cinematic overlay */
+/* Lighter overlay */
 #heroCarousel .image-wrapper.bg-overlay:before {
     content: "" !important;
     position: absolute !important;
@@ -113,54 +65,40 @@
     justify-content: center !important;
 }
 
-/* Perfectly Proportioned Logo */
-#heroCarousel .hero-full-logo {
-    max-height: 115px !important;
-    width: auto !important;
-    filter: drop-shadow(0px 4px 14px rgba(0, 0, 0, 0.75)) !important;
-    transition: transform 0.3s ease, max-height 0.3s ease !important;
-}
-
-.hero-pill-badge {
-    background: rgba(18, 20, 24, 0.75) !important;
-    backdrop-filter: blur(8px) !important;
-    font-size: 0.78rem !important;
-    letter-spacing: 0.18em !important;
-    color: #C6A664 !important;
-    border-color: rgba(198, 166, 100, 0.35) !important;
-    padding: 0.45rem 1.1rem !important;
-}
-
-#heroCarousel .hero-location-tag {
-    font-size: 0.92rem !important;
-    letter-spacing: 0.16em !important;
-    color: #E2E0D8 !important;
-    text-shadow: 0px 2px 8px rgba(0, 0, 0, 0.9) !important;
-    margin-top: 0.75rem !important;
+/* Times New Roman Elegant Title */
+.hero-times-title {
+    font-family: "Times New Roman", Times, Georgia, serif !important;
+    font-size: 3.8rem !important;
+    font-weight: 400 !important;
+    letter-spacing: 0.06em !important;
+    line-height: 1.15 !important;
+    color: #FFFFFF !important;
+    text-shadow: 0px 4px 20px rgba(0, 0, 0, 0.95), 0px 2px 8px rgba(0, 0, 0, 0.8) !important;
+    margin: 0 !important;
 }
 
 /* Desktop Hero Height */
 @media (min-width: 992px) {
     #heroCarousel .hero-caption {
         height: calc(100vh - 2.5rem) !important;
-        min-height: 560px !important;
+        min-height: 520px !important;
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
     }
 }
 
-/* Mobile Responsive Hero Height & Logo */
+/* Mobile Responsive Times New Roman Title */
 @media (max-width: 767.98px) {
     #hero, 
     .hero-carousel {
         height: 100vh !important;
-        min-height: 520px !important;
+        min-height: 480px !important;
     }
 
     #heroCarousel .hero-caption {
         height: 100vh !important;
-        min-height: 520px !important;
+        min-height: 480px !important;
         padding-top: 2rem !important;
         padding-bottom: 2rem !important;
         display: flex !important;
@@ -168,19 +106,9 @@
         justify-content: center !important;
     }
 
-    #heroCarousel .hero-full-logo {
-        max-height: 85px !important;
-    }
-
-    .hero-pill-badge {
-        font-size: 0.68rem !important;
-        letter-spacing: 0.12em !important;
-        padding: 0.35rem 0.85rem !important;
-    }
-
-    #heroCarousel .hero-location-tag {
-        font-size: 0.8rem !important;
-        letter-spacing: 0.1em !important;
-        margin-top: 0.6rem !important;
+    .hero-times-title {
+        font-size: 2.2rem !important;
+        letter-spacing: 0.04em !important;
+        line-height: 1.25 !important;
     }
 }
