@@ -1,7 +1,9 @@
 
 
+
+
 /* ==========================================================================
-   MINIMALIST ELEGANT HERO DESIGN (LOGO + LOCATION TAG ONLY)
+   PURE HERO DESIGN (LOGO + NEIGHBORHOOD TAG ONLY - NO PROMO CARDS)
    ========================================================================== */
 
 #hero, 
@@ -32,7 +34,7 @@
     z-index: 1 !important;
 }
 
-/* Deep cinematic vignette overlay for high contrast */
+/* Dark gradient overlay for high contrast */
 #heroCarousel .image-wrapper.bg-overlay:before {
     content: "" !important;
     position: absolute !important;
@@ -40,8 +42,8 @@
     left: 0 !important;
     width: 100% !important;
     height: 100% !important;
-    background: radial-gradient(circle at center, rgba(12, 14, 18, 0.45) 0%, rgba(8, 9, 10, 0.85) 85%),
-                linear-gradient(180deg, rgba(8, 9, 10, 0.7) 0%, rgba(8, 9, 10, 0.5) 50%, rgba(8, 9, 10, 0.92) 100%) !important;
+    background: radial-gradient(circle at center, rgba(12, 14, 18, 0.4) 0%, rgba(8, 9, 10, 0.85) 85%),
+                linear-gradient(180deg, rgba(8, 9, 10, 0.7) 0%, rgba(8, 9, 10, 0.5) 50%, rgba(8, 9, 10, 0.9) 100%) !important;
     z-index: 1 !important;
 }
 
@@ -57,20 +59,20 @@
 
 /* Full Logo Styling */
 #heroCarousel .hero-full-logo {
-    max-height: 175px !important;
+    max-height: 180px !important;
     width: auto;
-    filter: drop-shadow(0px 8px 24px rgba(0, 0, 0, 0.85)) !important;
-    transition: transform 0.4s ease, max-height 0.4s ease !important;
+    filter: drop-shadow(0px 6px 20px rgba(0, 0, 0, 0.9)) !important;
+    transition: transform 0.3s ease, max-height 0.3s ease !important;
 }
 
 /* Location Tag Styling */
 #heroCarousel .hero-location-tag {
     font-size: 1.05rem !important;
-    letter-spacing: 0.2em !important;
+    letter-spacing: 0.18em !important;
     line-height: 1.4 !important;
     color: #C6A664 !important;
-    text-shadow: 0px 3px 12px rgba(0, 0, 0, 0.95) !important;
-    margin-top: 1.25rem !important;
+    text-shadow: 0px 3px 10px rgba(0, 0, 0, 0.95) !important;
+    margin-top: 1rem !important;
 }
 
 /* Desktop Hero Height */
@@ -89,12 +91,12 @@
     #hero, 
     .hero-carousel {
         height: 100vh !important;
-        min-height: 580px !important;
+        min-height: 560px !important;
     }
 
     #heroCarousel .hero-caption {
         height: 100vh !important;
-        min-height: 580px !important;
+        min-height: 560px !important;
         padding-top: 2rem !important;
         padding-bottom: 2rem !important;
         display: flex !important;
@@ -103,12 +105,12 @@
     }
 
     #heroCarousel .hero-full-logo {
-        max-height: 135px !important;
+        max-height: 130px !important;
     }
 
     #heroCarousel .hero-location-tag {
         font-size: 0.85rem !important;
-        letter-spacing: 0.12em !important;
-        margin-top: 1rem !important;
+        letter-spacing: 0.1em !important;
+        margin-top: 0.85rem !important;
     }
 }
