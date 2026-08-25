@@ -1,0 +1,320 @@
+/* ==========================================================================
+   PALETA MODO OSCURO (GRAFITO & ANTRACITA ELEGANTE) - HOSTEL DOWNTOWN LAS MORENAS
+   ========================================================================== */
+
+:root, [data-bs-theme="dark"] {
+    --bs-primary: #FFFFFF;
+    --bs-primary-rgb: 255, 255, 255;
+    
+    --bs-secondary: #1E1F24;
+    --bs-secondary-rgb: 30, 31, 36;
+    
+    --bs-body-bg: #121316;
+    --bs-body-bg-rgb: 18, 19, 22;
+    
+    --bs-body-color: #F8F6F0;
+    --bs-body-color-rgb: 248, 246, 240;
+
+    --bs-tertiary-bg: #18191D;
+    --bs-dark: #0D0E10;
+}
+
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 90px;
+}
+
+body {
+    background-color: #121316 !important;
+    color: #F8F6F0 !important;
+}
+
+/* All Main Section Headings in Pure White */
+h1, h2, h3, h4, h5, h6, .h-special-font, .display-4, .display-5, .card-body h4, .card-body h5 {
+    color: #FFFFFF !important;
+}
+
+/* Small Category Subtitles and Labels in Ocre Gold Accent */
+p.text-primary, 
+p.text-warning, 
+.text-uppercase.ls-2, 
+.hero-inscription, 
+.text-warning, 
+.text-accent,
+i.hicon {
+    color: #C6A664 !important;
+}
+
+/* Paragraphs and body text */
+p, span, li, small, label, .text-body-secondary, .text-secondary {
+    color: #E2E0D8 !important;
+}
+
+/* Header & Navbar (Negro Grafito) */
+#header .header-navbar {
+    background-color: #0D0E10 !important;
+    border-bottom: 2px solid #C6A664 !important;
+}
+#header .navbar-nav .nav-link {
+    color: #F8F6F0 !important;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    padding-left: 1.25rem !important;
+    padding-right: 1.25rem !important;
+    transition: color 0.3s ease;
+}
+#header .navbar-nav .nav-link:hover,
+#header .navbar-nav .nav-link.active {
+    color: #C6A664 !important;
+}
+
+/* Cards & Surface Containers (Antracita Elegante) */
+.card, .p-6.bg-body-tertiary, .bg-body-tertiary {
+    background-color: #1E1F24 !important;
+    border: 1px solid rgba(198, 166, 100, 0.22) !important;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.45) !important;
+    color: #F8F6F0 !important;
+}
+
+.card h4, .card h5, .card h6 {
+    color: #FFFFFF !important;
+}
+.card p {
+    color: #E2E0D8 !important;
+}
+
+/* Booking Card Header / Top Bar */
+.check-room-top .card {
+    background-color: #1E1F24 !important;
+    border-top: 4px solid #C6A664 !important;
+}
+.check-room-top label, .check-room-top input, .check-room-top button {
+    color: #F8F6F0 !important;
+    background-color: #121316 !important;
+    border-color: rgba(198, 166, 100, 0.3) !important;
+}
+
+/* Buttons */
+.btn-primary, .btn-outline-primary {
+    background-color: #1E1F24 !important;
+    border-color: #C6A664 !important;
+    color: #FFFFFF !important;
+}
+.btn-primary:hover, .btn-outline-primary:hover {
+    background-color: #C6A664 !important;
+    border-color: #C6A664 !important;
+    color: #121316 !important;
+    font-weight: 700 !important;
+}
+
+/* CTA Accent Buttons ("Reservar", "Consultar") */
+.btn-accent, .btn-warning, .btn-gold {
+    background-color: #C6A664 !important;
+    border-color: #C6A664 !important;
+    color: #121316 !important;
+    font-weight: 700 !important;
+}
+.btn-accent:hover, .btn-warning:hover, .btn-gold:hover {
+    background-color: #E0C17E !important;
+    border-color: #E0C17E !important;
+    color: #121316 !important;
+}
+
+/* Badges */
+.badge.bg-primary, .badge.bg-secondary, .badge.bg-success, .badge.bg-info, .badge.bg-warning {
+    background-color: #C6A664 !important;
+    color: #121316 !important;
+    font-weight: 700 !important;
+}
+
+/* Footer (Negro Grafito Profundo) */
+footer, #footer, .footer-dark {
+    background-color: #08090A !important;
+    color: #F8F6F0 !important;
+    border-top: 3px solid #C6A664 !important;
+}
+footer h4, footer h5, footer h6 {
+    color: #FFFFFF !important;
+}
+footer strong {
+    color: #C6A664 !important;
+}
+
+/* Developer Signature Tag - Discreto & Alineado */
+.burdev-signature-link, a[title="Burdev."] img {
+    opacity: 0.8;
+    transition: opacity 0.2s ease !important;
+    transform: none !important;
+    box-shadow: none !important;
+    filter: none !important;
+    vertical-align: middle !important;
+}
+a[title="Burdev."]:hover img {
+    opacity: 1 !important;
+    transform: none !important;
+    box-shadow: none !important;
+    filter: none !important;
+}
+
+/* ==========================================================================
+   FACILITIES SECTION ULTIMATE MOBILE & DESKTOP DESIGN
+   ========================================================================== */
+
+.facility-card {
+    background: #1E1F24 !important;
+    border: 1px solid rgba(198, 166, 100, 0.22) !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35) !important;
+    transition: all 0.3s ease !important;
+}
+
+.facility-card:hover {
+    transform: translateY(-4px) !important;
+    border-color: #C6A664 !important;
+    box-shadow: 0 12px 30px rgba(198, 166, 100, 0.25) !important;
+}
+
+.facility-icon-badge {
+    width: 56px;
+    height: 56px;
+    border-radius: 16px;
+    background: rgba(198, 166, 100, 0.12);
+    border: 1px solid rgba(198, 166, 100, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.facility-card:hover .facility-icon-badge {
+    background: #C6A664;
+    border-color: #C6A664;
+}
+
+.facility-card:hover .facility-icon-badge i {
+    color: #121316 !important;
+}
+
+@media (max-width: 767.98px) {
+    .facility-icon-badge {
+        width: 46px;
+        height: 46px;
+        border-radius: 12px;
+    }
+    
+    .facility-card {
+        padding: 1.15rem 0.75rem !important;
+    }
+    
+    .fs-7 {
+        font-size: 0.76rem !important;
+        line-height: 1.35 !important;
+    }
+}
+
+/* ==========================================================================
+   UNIFIED HERO TYPOGRAPHY & DIMENSIONS (SAME SIZES & FONTS ON DESKTOP & MOBILE)
+   ========================================================================== */
+
+#hero, 
+.hero-carousel {
+    position: relative !important;
+    display: block !important;
+    visibility: visible !important;
+    width: 100% !important;
+}
+
+#heroCarousel,
+#heroCarousel .carousel-inner,
+#heroCarousel .carousel-item {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+#heroCarousel .image-wrapper {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    background-size: cover !important;
+    background-position: center center !important;
+    background-repeat: no-repeat !important;
+    background-attachment: scroll !important;
+    z-index: 1 !important;
+}
+
+#heroCarousel .image-wrapper.bg-overlay:before {
+    content: "" !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    background: linear-gradient(180deg, rgba(8, 9, 10, 0.75) 0%, rgba(8, 9, 10, 0.55) 50%, rgba(8, 9, 10, 0.88) 100%) !important;
+    z-index: 1 !important;
+}
+
+#heroCarousel .bg-content {
+    position: relative !important;
+    z-index: 2 !important;
+    height: 100% !important;
+    width: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+/* Unified Doors Logo Size */
+#heroCarousel .hero-logo-img {
+    max-height: 75px !important;
+    width: auto;
+    margin-top: 0.5rem !important;
+    margin-bottom: 1.25rem !important;
+    filter: drop-shadow(0px 4px 10px rgba(0, 0, 0, 0.9)) !important;
+    transition: max-height 0.3s ease;
+}
+
+/* Unified Subtitle Size & Letter Spacing */
+#heroCarousel .hero-inscription {
+    font-size: 0.78rem !important;
+    letter-spacing: 0.1em !important;
+    line-height: 1.4 !important;
+    margin-bottom: 0.75rem !important;
+    color: #C6A664 !important;
+    text-shadow: 0px 2px 6px rgba(0, 0, 0, 0.9) !important;
+}
+
+/* Unified Title Size & Weight */
+#heroCarousel .hero-caption h4 {
+    font-size: 1.7rem !important;
+    line-height: 1.2 !important;
+    font-weight: 700 !important;
+    color: #FFFFFF !important;
+    margin-bottom: 1.25rem !important;
+    text-shadow: 0px 3px 10px rgba(0, 0, 0, 0.95) !important;
+}
+
+@media (min-width: 992px) {
+    #heroCarousel .hero-caption {
+        height: calc(100vh - 2.5rem) !important;
+        min-height: 560px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+}
+
+@media (max-width: 767.98px) {
+    #hero, 
+    .hero-carousel {
+        min-height: 500px !important;
+    }
+
+    #heroCarousel .hero-caption {
+        height: 520px !important;
+        min-height: 520px !important;
+        padding-top: 3.5rem !important;
+        padding-bottom: 2rem !important;
+    }
+}
