@@ -1,409 +1,743 @@
 <!DOCTYPE html>
-<html lang="es" data-bs-theme="dark">
+<html lang="es">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel de Control Staff • Hostel Downtown Las Morenas</title>
-    <link href="assets/img/logos/favicon.png" rel="shortcut icon">
-    <link href="assets/fonts/hotel-icons/hotel-icons.min.css" rel="stylesheet">
-    <link href="assets/css/plugins.css" rel="stylesheet">
-    <link href="assets/css/theme.css" rel="stylesheet">
-    <link href="assets/css/custom.css" rel="stylesheet">
-    <style>
-        .admin-kpi-card {
-            background: rgba(30, 31, 36, 0.85);
-            border: 1px solid rgba(198, 166, 100, 0.25);
-            border-radius: 1rem;
-            transition: transform 0.2s ease, border-color 0.2s ease;
-        }
-        .admin-kpi-card:hover {
-            border-color: #C6A664;
-            transform: translateY(-2px);
-        }
-        .admin-table {
-            background: rgba(22, 24, 28, 0.9);
-            border-radius: 1rem;
-            overflow: hidden;
-        }
-        .admin-table th {
-            background: rgba(30, 31, 36, 0.95);
-            color: #C6A664;
-            font-size: 0.82rem;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            border-bottom: 1px solid rgba(198, 166, 100, 0.3);
-        }
-        .login-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            background: rgba(12, 14, 18, 0.96);
-            backdrop-filter: blur(16px);
-            z-index: 9999;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .login-card {
-            background: rgba(30, 31, 36, 0.95);
-            border: 1px solid rgba(198, 166, 100, 0.4);
-            border-radius: 1.25rem;
-            max-width: 420px;
-            width: 90%;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
-        }
-        .badge-status-confirmed { background: rgba(25, 135, 84, 0.25); color: #2ecc71; border: 1px solid rgba(46, 204, 113, 0.4); }
-        .badge-status-pending { background: rgba(255, 193, 7, 0.25); color: #f1c40f; border: 1px solid rgba(241, 196, 15, 0.4); }
-        .badge-status-checkin { background: rgba(13, 110, 253, 0.25); color: #3498db; border: 1px solid rgba(52, 152, 219, 0.4); }
-    </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Panel de Gestión Staff • Hostel Downtown Las Morenas</title>
+<link href="assets/img/logos/favicon.png" rel="shortcut icon">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Jost:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0F0D0A;
+    --bg-elevated:#161310;
+    --bg-card:#1B1712;
+    --bg-card-hover:#211C16;
+    --line: rgba(198,166,100,0.16);
+    --line-strong: rgba(198,166,100,0.32);
+    --gold:#C6A664;
+    --gold-bright:#E4C68C;
+    --text:#F3EEE3;
+    --text-soft:#B8AD98;
+    --text-mute:#7A705F;
+    --success:#8FAE7E;
+    --success-bg: rgba(143,174,126,0.12);
+    --warn:#D4A24C;
+    --warn-bg: rgba(212,162,76,0.12);
+    --info:#8FA6B8;
+    --info-bg: rgba(143,166,184,0.12);
+    --danger:#C07359;
+    --danger-bg: rgba(192,115,89,0.12);
+    --radius: 14px;
+    --sidebar-w: 264px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      radial-gradient(1200px 700px at 15% -10%, rgba(198,166,100,0.05), transparent 60%),
+      radial-gradient(900px 600px at 100% 0%, rgba(198,166,100,0.04), transparent 55%),
+      var(--bg);
+    color:var(--text);
+    font-family:'Inter',sans-serif;
+    -webkit-font-smoothing:antialiased;
+    min-height:100vh;
+  }
+  h1,h2,h3,h4,h5,h6{font-family:'Fraunces',serif; font-weight:500; margin:0;}
+  a{color:inherit;}
+  .eyebrow{
+    font-family:'Jost',sans-serif;
+    text-transform:uppercase;
+    letter-spacing:0.14em;
+    font-size:0.72rem;
+    color:var(--text-mute);
+  }
+  ::selection{ background: rgba(198,166,100,0.3); }
+  ::-webkit-scrollbar{ width:8px; height:8px; }
+  ::-webkit-scrollbar-thumb{ background:rgba(198,166,100,0.25); border-radius:8px; }
+  ::-webkit-scrollbar-track{ background:transparent; }
+
+  /* ============ LOGIN ============ */
+  .login-overlay{
+    position:fixed; inset:0; z-index:9999;
+    display:flex; align-items:center; justify-content:center;
+    background:
+      radial-gradient(800px 500px at 50% 30%, rgba(198,166,100,0.06), transparent 60%),
+      var(--bg);
+  }
+  .login-card{
+    width:min(420px, 90vw);
+    background:var(--bg-elevated);
+    border:1px solid var(--line-strong);
+    border-radius:20px;
+    padding:3rem 2.5rem 2.25rem;
+    text-align:center;
+    box-shadow: 0 40px 80px -20px rgba(0,0,0,0.7);
+    position:relative;
+  }
+  .login-card::before{
+    content:"";
+    position:absolute; inset:0;
+    border-radius:20px;
+    padding:1px;
+    background:linear-gradient(155deg, rgba(198,166,100,0.5), transparent 40%);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor; mask-composite: exclude;
+    pointer-events:none;
+  }
+  .login-card img.brand{ max-height:52px; margin-bottom:1.5rem; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.5)); }
+  .login-card h1{ font-size:1.5rem; color:var(--text); margin-bottom:0.4rem; }
+  .login-card p.sub{ color:var(--text-soft); font-size:0.9rem; margin-bottom:2rem; }
+  .field{ position:relative; margin-bottom:1.25rem; }
+  .field input{
+    width:100%;
+    background:transparent;
+    border:none;
+    border-bottom:1px solid var(--line-strong);
+    color:var(--text);
+    font-family:'Jost',sans-serif;
+    font-size:1.05rem;
+    letter-spacing:0.15em;
+    text-align:center;
+    padding:0.85rem 0.5rem;
+    outline:none;
+    transition: border-color .2s ease;
+  }
+  .field input:focus{ border-color:var(--gold); }
+  .field input::placeholder{ color:var(--text-mute); letter-spacing:0.08em; }
+  .login-error{
+    display:none;
+    color:var(--danger);
+    background:var(--danger-bg);
+    border:1px solid rgba(192,115,89,0.3);
+    border-radius:10px;
+    padding:0.6rem 0.9rem;
+    font-size:0.82rem;
+    margin-bottom:1.25rem;
+  }
+  .login-error.show{ display:block; }
+  .btn-gold{
+    width:100%;
+    background:linear-gradient(180deg, var(--gold-bright), var(--gold));
+    color:#1A1509;
+    border:none;
+    border-radius:10px;
+    padding:0.9rem;
+    font-family:'Jost',sans-serif;
+    font-weight:600;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    font-size:0.82rem;
+    cursor:pointer;
+    transition: transform .15s ease, box-shadow .15s ease;
+  }
+  .btn-gold:hover{ transform:translateY(-1px); box-shadow:0 10px 24px -8px rgba(198,166,100,0.5); }
+  .login-foot{
+    margin-top:1.75rem; padding-top:1.25rem;
+    border-top:1px solid var(--line);
+    font-size:0.74rem; color:var(--text-mute);
+  }
+
+  /* ============ SHELL ============ */
+  .shell{ display:flex; min-height:100vh; }
+
+  /* Sidebar */
+  .sidebar{
+    width:var(--sidebar-w);
+    flex-shrink:0;
+    background:var(--bg-elevated);
+    border-right:1px solid var(--line);
+    display:flex; flex-direction:column;
+    position:fixed; top:0; bottom:0; left:0;
+    padding:1.75rem 1.25rem;
+  }
+  .sidebar-brand{
+    display:flex; align-items:center; gap:0.7rem;
+    padding-bottom:1.5rem; margin-bottom:1.5rem;
+    border-bottom:1px solid var(--line);
+  }
+  .sidebar-brand img{ height:34px; width:auto; }
+  .sidebar-brand .tag{
+    font-family:'Jost',sans-serif; font-size:0.62rem; letter-spacing:0.14em;
+    color:var(--gold); text-transform:uppercase; margin-top:2px;
+  }
+  .shift-pill{
+    display:flex; align-items:center; gap:0.55rem;
+    background:var(--bg-card);
+    border:1px solid var(--line);
+    border-radius:11px;
+    padding:0.65rem 0.85rem;
+    margin-bottom:1.75rem;
+  }
+  .shift-pill .dot{ width:7px; height:7px; border-radius:50%; background:var(--success); box-shadow:0 0 0 3px var(--success-bg); flex-shrink:0;}
+  .shift-pill div{ line-height:1.25; }
+  .shift-pill .label{ font-size:0.66rem; color:var(--text-mute); text-transform:uppercase; letter-spacing:0.08em; }
+  .shift-pill .val{ font-size:0.82rem; font-weight:600; color:var(--text); }
+
+  .nav-group-label{
+    font-family:'Jost',sans-serif; text-transform:uppercase; letter-spacing:0.12em;
+    font-size:0.66rem; color:var(--text-mute); margin:0 0.5rem 0.6rem;
+  }
+  .nav-links{ list-style:none; padding:0; margin:0 0 1.5rem; }
+  .nav-links li + li{ margin-top:0.25rem; }
+  .nav-link{
+    display:flex; align-items:center; gap:0.75rem;
+    padding:0.7rem 0.85rem;
+    border-radius:10px;
+    color:var(--text-soft);
+    font-size:0.88rem; font-weight:500;
+    cursor:pointer;
+    border:1px solid transparent;
+    transition: all .15s ease;
+  }
+  .nav-link svg{ width:17px; height:17px; flex-shrink:0; opacity:0.85; }
+  .nav-link:hover{ background:var(--bg-card); color:var(--text); }
+  .nav-link.active{
+    background:linear-gradient(90deg, rgba(198,166,100,0.14), rgba(198,166,100,0.03));
+    border-color:var(--line-strong);
+    color:var(--gold-bright);
+  }
+  .nav-link .count{
+    margin-left:auto;
+    background:rgba(198,166,100,0.15);
+    color:var(--gold);
+    font-size:0.68rem; font-weight:600;
+    padding:0.1rem 0.45rem;
+    border-radius:20px;
+  }
+
+  .sidebar-foot{ margin-top:auto; display:flex; flex-direction:column; gap:0.6rem; }
+  .side-btn{
+    display:flex; align-items:center; justify-content:center; gap:0.5rem;
+    padding:0.7rem; border-radius:10px;
+    font-family:'Jost',sans-serif; font-size:0.76rem; font-weight:500; letter-spacing:0.04em;
+    text-decoration:none; cursor:pointer; border:1px solid var(--line);
+    color:var(--text-soft); background:transparent;
+    transition:.15s ease;
+  }
+  .side-btn svg{ width:15px; height:15px; }
+  .side-btn:hover{ border-color:var(--line-strong); color:var(--text); background:var(--bg-card); }
+  .side-btn.danger:hover{ color:var(--danger); border-color:rgba(192,115,89,0.4); background:var(--danger-bg); }
+
+  /* Main */
+  .main{ flex:1; margin-left:var(--sidebar-w); padding:2.5rem 3rem 4rem; max-width:1500px; }
+
+  .topbar{
+    display:flex; align-items:flex-end; justify-content:space-between;
+    margin-bottom:2.5rem; gap:1.5rem; flex-wrap:wrap;
+  }
+  .topbar h1{ font-size:1.9rem; color:var(--text); margin-bottom:0.35rem; }
+  .topbar .eyebrow{ margin-bottom:0.5rem; display:block; }
+  .topbar-actions{ display:flex; gap:0.7rem; }
+  .btn{
+    font-family:'Jost',sans-serif; font-size:0.78rem; font-weight:500; letter-spacing:0.05em;
+    padding:0.72rem 1.3rem; border-radius:10px; cursor:pointer; text-transform:uppercase;
+    display:inline-flex; align-items:center; gap:0.5rem;
+    border:1px solid transparent; transition:.15s ease;
+  }
+  .btn svg{ width:14px; height:14px; }
+  .btn-primary{ background:linear-gradient(180deg, var(--gold-bright), var(--gold)); color:#1A1509; }
+  .btn-primary:hover{ box-shadow:0 12px 24px -10px rgba(198,166,100,0.55); transform:translateY(-1px); }
+  .btn-ghost{ background:var(--bg-card); border-color:var(--line); color:var(--text-soft); }
+  .btn-ghost:hover{ border-color:var(--line-strong); color:var(--text); }
+
+  /* KPI cards */
+  .kpi-grid{
+    display:grid; grid-template-columns:repeat(4, 1fr); gap:1.25rem; margin-bottom:2.75rem;
+  }
+  .kpi-card{
+    background:var(--bg-card);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:1.6rem 1.5rem;
+    transition: border-color .2s ease, transform .2s ease;
+  }
+  .kpi-card:hover{ border-color:var(--line-strong); transform:translateY(-2px); }
+  .kpi-top{ display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:1.1rem; }
+  .kpi-icon{
+    width:38px; height:38px; border-radius:10px;
+    display:flex; align-items:center; justify-content:center;
+    background:rgba(198,166,100,0.1); color:var(--gold);
+  }
+  .kpi-icon svg{ width:18px; height:18px; }
+  .kpi-card .num{ font-family:'Fraunces',serif; font-size:2.1rem; color:var(--text); margin-bottom:0.5rem; }
+  .kpi-bar{ height:4px; border-radius:4px; background:rgba(255,255,255,0.06); overflow:hidden; margin-bottom:0.6rem; }
+  .kpi-bar span{ display:block; height:100%; background:linear-gradient(90deg, var(--gold), var(--gold-bright)); }
+  .kpi-note{ font-size:0.78rem; color:var(--text-mute); }
+  .kpi-note.up{ color:var(--success); }
+
+  /* Section panels */
+  .panel{ display:none; }
+  .panel.active{ display:block; }
+
+  .card-block{
+    background:var(--bg-card);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:1.75rem;
+  }
+  .card-block-head{
+    display:flex; align-items:center; justify-content:space-between; gap:1rem;
+    margin-bottom:1.5rem; flex-wrap:wrap;
+  }
+  .card-block-head h2{ font-size:1.15rem; color:var(--text); }
+
+  .toolbar{ display:flex; gap:0.6rem; }
+  .input-x, .select-x{
+    background:var(--bg-elevated); border:1px solid var(--line); color:var(--text);
+    border-radius:9px; padding:0.55rem 0.9rem; font-family:'Inter',sans-serif; font-size:0.82rem;
+    outline:none; transition:border-color .15s ease;
+  }
+  .input-x{ min-width:220px; }
+  .input-x:focus, .select-x:focus{ border-color:var(--gold); }
+  .input-x::placeholder{ color:var(--text-mute); }
+
+  /* Table */
+  .table-wrap{ overflow-x:auto; }
+  table{ width:100%; border-collapse:collapse; }
+  thead th{
+    font-family:'Jost',sans-serif; text-transform:uppercase; letter-spacing:0.08em;
+    font-size:0.68rem; color:var(--gold); text-align:left;
+    padding:0 0.9rem 0.85rem; border-bottom:1px solid var(--line-strong); white-space:nowrap;
+  }
+  tbody td{
+    padding:1.05rem 0.9rem; border-bottom:1px solid var(--line);
+    font-size:0.86rem; color:var(--text-soft); vertical-align:middle;
+  }
+  tbody tr:last-child td{ border-bottom:none; }
+  tbody tr{ transition: background .15s ease; }
+  tbody tr:hover{ background:rgba(198,166,100,0.035); }
+  td.code{ font-family:'Jost',sans-serif; color:var(--gold); letter-spacing:0.03em; }
+  td.guest{ color:var(--text); font-weight:600; }
+  .wa-link{ display:inline-flex; align-items:center; gap:0.4rem; color:var(--success); text-decoration:none; font-size:0.82rem; }
+  .wa-link svg{ width:13px; height:13px; }
+  .wa-link:hover{ text-decoration:underline; }
+
+  .pill{
+    display:inline-flex; align-items:center; gap:0.4rem;
+    padding:0.32rem 0.75rem; border-radius:20px;
+    font-size:0.72rem; font-weight:600; letter-spacing:0.02em; white-space:nowrap;
+  }
+  .pill::before{ content:""; width:6px; height:6px; border-radius:50%; background:currentColor; }
+  .pill-confirmed{ background:var(--success-bg); color:var(--success); }
+  .pill-checkin{ background:var(--info-bg); color:var(--info); }
+  .pill-pending{ background:var(--warn-bg); color:var(--warn); }
+  .pill-full{ background:var(--success-bg); color:var(--success); }
+
+  .pay-tag{ font-size:0.76rem; color:var(--text-mute); }
+  .pay-tag.paid{ color:var(--success); }
+  .pay-tag.deposit{ color:var(--gold); }
+  .pay-tag.due{ color:var(--warn); }
+
+  .row-action{
+    background:transparent; border:1px solid var(--line); color:var(--text-soft);
+    border-radius:8px; padding:0.4rem 0.9rem; font-size:0.74rem; cursor:pointer;
+    font-family:'Jost',sans-serif; letter-spacing:0.04em; transition:.15s ease;
+  }
+  .row-action:hover{ border-color:var(--gold); color:var(--gold-bright); }
+
+  .empty-row{ text-align:center; padding:2.5rem 0; color:var(--text-mute); font-size:0.85rem; }
+
+  /* Room cards */
+  .room-grid{ display:grid; grid-template-columns:repeat(4, 1fr); gap:1.25rem; }
+  .room-card{
+    background:var(--bg-card); border:1px solid var(--line); border-radius:var(--radius);
+    padding:1.5rem; border-left:3px solid var(--line-strong);
+  }
+  .room-card.occupied{ border-left-color:var(--success); }
+  .room-card.available{ border-left-color:var(--info); }
+  .room-card.maint{ border-left-color:var(--warn); }
+  .room-card.full{ border-left-color:var(--success); }
+  .room-head{ display:flex; justify-content:space-between; align-items:flex-start; gap:0.75rem; margin-bottom:0.85rem; }
+  .room-head h3{ font-size:1rem; color:var(--text); font-family:'Inter',sans-serif; font-weight:700; }
+  .room-meta{ font-size:0.8rem; color:var(--text-soft); margin:0 0 0.3rem; }
+  .room-meta.sub{ color:var(--text-mute); margin-bottom:1.1rem; }
+  .room-foot{
+    display:flex; align-items:center; justify-content:space-between;
+    padding-top:0.9rem; border-top:1px solid var(--line);
+  }
+  .clean-status{ font-size:0.78rem; display:flex; align-items:center; gap:0.35rem; }
+  .clean-status svg{ width:13px; height:13px; }
+  .clean-status.ok{ color:var(--success); }
+  .clean-status.warn{ color:var(--warn); }
+
+  /* Settings */
+  .settings-grid{ display:grid; grid-template-columns:repeat(2, 1fr); gap:1.25rem; }
+  .setting-card{
+    background:var(--bg-elevated); border:1px solid var(--line); border-radius:12px; padding:1.5rem;
+  }
+  .setting-card h4{ font-family:'Inter',sans-serif; font-size:0.92rem; font-weight:700; color:var(--gold-bright); margin-bottom:1rem; }
+  .switch-row{ display:flex; align-items:center; justify-content:space-between; gap:1rem; margin-bottom:0.9rem; }
+  .switch-row .lbl{ font-size:0.86rem; color:var(--text); }
+  .switch{ position:relative; width:44px; height:24px; flex-shrink:0; }
+  .switch input{ opacity:0; width:0; height:0; }
+  .slider{
+    position:absolute; inset:0; background:rgba(255,255,255,0.1); border-radius:24px; cursor:pointer; transition:.2s;
+  }
+  .slider::before{
+    content:""; position:absolute; width:18px; height:18px; left:3px; top:3px;
+    background:#e9e2d2; border-radius:50%; transition:.2s;
+  }
+  .switch input:checked + .slider{ background:var(--gold); }
+  .switch input:checked + .slider::before{ transform:translateX(20px); background:#1a1509; }
+  .setting-note{ font-size:0.76rem; color:var(--text-mute); }
+
+  /* Toast */
+  .toast-x{
+    position:fixed; bottom:1.75rem; right:1.75rem; z-index:5000;
+    background:var(--bg-elevated); border:1px solid var(--line-strong); color:var(--text);
+    padding:0.85rem 1.25rem; border-radius:10px; font-size:0.84rem;
+    box-shadow:0 20px 40px -10px rgba(0,0,0,0.6);
+    display:flex; align-items:center; gap:0.6rem;
+    transform:translateY(20px); opacity:0; pointer-events:none; transition:.25s ease;
+  }
+  .toast-x.show{ transform:translateY(0); opacity:1; }
+  .toast-x svg{ width:16px; height:16px; color:var(--gold); flex-shrink:0; }
+
+  @media (max-width: 1200px){
+    .kpi-grid{ grid-template-columns:repeat(2,1fr); }
+    .room-grid{ grid-template-columns:repeat(2,1fr); }
+  }
+  @media (max-width: 960px){
+    .sidebar{ display:none; }
+    .main{ margin-left:0; padding:1.75rem 1.25rem 3rem; }
+  }
+</style>
 </head>
-<body class="bg-body-tertiary text-body">
+<body>
 
-    <!-- PASSWORD SECURITY MODAL / OVERLAY -->
-    <div id="adminLoginOverlay" class="login-overlay">
-        <div class="login-card p-5 text-center">
-            <img src="assets/img/logos/logo-hero-doors.png" alt="Hostel Downtown Las Morenas" class="img-fluid mb-3" style="max-height: 70px;">
-            <h5 class="fw-bold text-white mb-1">Panel de Gestión Staff</h5>
-            <p class="text-body-secondary small mb-4">Ingrese la clave de acceso de recepción para continuar</p>
-            
-            <form id="adminLoginForm" onsubmit="event.preventDefault(); checkAdminPass();">
-                <div class="mb-3">
-                    <input type="password" id="adminPasswordInput" class="form-control form-control-lg text-center bg-dark text-white border-secondary rounded-3 fs-6" placeholder="Clave (Ej: 1234)" autofocus required>
-                </div>
-                <div id="loginErrorMsg" class="alert alert-danger py-2 small d-none mb-3" style="background: rgba(220,53,69,0.2); border-color: rgba(220,53,69,0.4); color: #ff6b6b;">
-                    Clave incorrecta. Intente nuevamente (Prueba: 1234 o admin).
-                </div>
-                <button type="submit" class="btn btn-primary btn-lg w-100 fw-bold rounded-3">Acceder al Dashboard</button>
-            </form>
-            <div class="mt-4 pt-3 border-top border-secondary border-opacity-25">
-                <small class="text-body-secondary fs-8">Hostel Downtown Las Morenas • Maipú 556, CABA</small>
-            </div>
-        </div>
+<!-- ============ LOGIN OVERLAY ============ -->
+<div id="adminLoginOverlay" class="login-overlay">
+  <div class="login-card">
+    <img src="assets/img/logos/logo-hero-doors.png" alt="Hostel Downtown Las Morenas" class="brand">
+    <h1>Panel de Gestión</h1>
+    <p class="sub">Ingresá la clave de acceso de recepción para continuar</p>
+    <form id="adminLoginForm" onsubmit="event.preventDefault(); checkAdminPass();">
+      <div class="field">
+        <input type="password" id="adminPasswordInput" placeholder="CLAVE DE ACCESO" autofocus required>
+      </div>
+      <div id="loginErrorMsg" class="login-error">Clave incorrecta. Intentá nuevamente.</div>
+      <button type="submit" class="btn-gold">Acceder al panel</button>
+    </form>
+    <div class="login-foot">Hostel Downtown Las Morenas · Maipú 556, CABA</div>
+  </div>
+</div>
+
+<!-- ============ DASHBOARD ============ -->
+<div id="adminDashboardContent" class="shell" style="display:none;">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <img src="assets/img/logos/logo-header-text.png" alt="Hostel Downtown Las Morenas">
+    </div>
+    <div class="tag" style="margin:-1.1rem 0 1.5rem 2px;">Panel Staff</div>
+
+    <div class="shift-pill">
+      <span class="dot"></span>
+      <div>
+        <div class="label">Recepción activa</div>
+        <div class="val">Turno Mañana / Tarde</div>
+      </div>
     </div>
 
-    <!-- MAIN ADMIN DASHBOARD -->
-    <div id="adminDashboardContent" class="d-none">
-        
-        <!-- Admin Header Navigation -->
-        <nav class="navbar navbar-expand-lg bg-dark bg-opacity-75 border-bottom border-secondary border-opacity-25 py-3 sticky-top backdrop-blur">
-            <div class="container-fluid px-4">
-                <a class="navbar-brand d-flex align-items-center" href="index.html">
-                    <img src="assets/img/logos/logo-header-text.png" alt="Hostel Downtown Las Morenas" height="38">
-                    <span class="badge bg-warning text-dark fw-bold ms-3 px-2 py-1 fs-8">STAFF PANEL</span>
-                </a>
-                <div class="d-flex align-items-center gap-3">
-                    <div class="d-none d-md-flex align-items-center me-2">
-                        <i class="hicon hicon-bold hicon-reception text-warning me-2 fs-5"></i>
-                        <span class="small text-body-secondary">Recepción: <strong class="text-white">Turno Mañana / Turno Tarde</strong></span>
-                    </div>
-                    <a href="index.html" class="btn btn-outline-secondary btn-sm rounded-pill px-3"><i class="hicon hicon-bold hicon-home me-1"></i> Ir a la Web</a>
-                    <button class="btn btn-outline-danger btn-sm rounded-pill px-3" onclick="lockAdminPanel()"><i class="hicon hicon-bold hicon-lock me-1"></i> Bloquear</button>
-                </div>
-            </div>
-        </nav>
+    <div class="nav-group-label">Operación</div>
+    <ul class="nav-links">
+      <li><a class="nav-link active" data-panel="reservas" onclick="switchPanel('reservas', this)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 3v3M16 3v3"/></svg>
+        Reservas <span class="count">4</span>
+      </a></li>
+      <li><a class="nav-link" data-panel="habitaciones" onclick="switchPanel('habitaciones', this)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 18v-6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v6"/><path d="M3 12V7a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v1"/><path d="M3 21h18"/></svg>
+        Habitaciones
+      </a></li>
+      <li><a class="nav-link" data-panel="ajustes" onclick="switchPanel('ajustes', this)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1 1.55V21a2 2 0 1 1-4 0v-.09a1.7 1.7 0 0 0-1-1.55 1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.7 1.7 0 0 0 .34-1.87 1.7 1.7 0 0 0-1.55-1H3a2 2 0 1 1 0-4h.09a1.7 1.7 0 0 0 1.55-1 1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.7 1.7 0 0 0 1.87.34H9a1.7 1.7 0 0 0 1-1.55V3a2 2 0 1 1 4 0v.09a1.7 1.7 0 0 0 1 1.55 1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.7 1.7 0 0 0-.34 1.87V9a1.7 1.7 0 0 0 1.55 1H21a2 2 0 1 1 0 4h-.09a1.7 1.7 0 0 0-1.55 1z"/></svg>
+        Ajustes Web
+      </a></li>
+    </ul>
 
-        <!-- Admin Content Body -->
-        <div class="container-fluid px-4 py-5">
-            
-            <!-- Page Title & Quick Actions -->
-            <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between mb-5">
-                <div>
-                    <h3 class="fw-bold text-white mb-1 h-special-font">Dashboard de Operaciones</h3>
-                    <p class="text-body-secondary mb-0 small">Gestión en tiempo real de reservas, disponibilidad y mantenimiento</p>
-                </div>
-                <div class="mt-3 mt-md-0 d-flex gap-2">
-                    <button class="btn btn-warning btn-sm fw-bold px-3 py-2 rounded-3 text-dark" onclick="alert('Modal de Nueva Reserva Manual preparado para integración PMS')">+ Nueva Reserva Manual</button>
-                    <button class="btn btn-dark border border-secondary border-opacity-50 btn-sm text-white px-3 py-2 rounded-3" onclick="location.reload()"><i class="hicon hicon-bold hicon-refresh me-1"></i> Actualizar</button>
-                </div>
-            </div>
+    <div class="sidebar-foot">
+      <a href="index.html" class="side-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 12l9-9 9 9"/><path d="M5 10v10h14V10"/></svg>
+        Ir a la web
+      </a>
+      <button class="side-btn danger" onclick="lockAdminPanel()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+        Bloquear panel
+      </button>
+    </div>
+  </aside>
 
-            <!-- KPI Cards Row -->
-            <div class="row g-4 mb-5">
-                <div class="col-12 col-sm-6 col-xl-3">
-                    <div class="admin-kpi-card p-4">
-                        <div class="d-flex align-items-center justify-content-between mb-3">
-                            <span class="text-body-secondary small text-uppercase fw-semibold ls-1">Ocupación Hoy</span>
-                            <div class="p-2 bg-warning bg-opacity-10 rounded-3 text-warning">
-                                <i class="hicon hicon-bold hicon-bed fs-4"></i>
-                            </div>
-                        </div>
-                        <h2 class="fw-bold text-white mb-1">88%</h2>
-                        <div class="progress bg-dark mb-2" style="height: 6px;">
-                            <div class="progress-bar bg-warning" role="progressbar" style="width: 88%" aria-valuenow="88" aria-valuemin="0" aria-valuemax="100"></div>
-                        </div>
-                        <small class="text-body-secondary">22 de 25 habitaciones/camas ocupadas</small>
-                    </div>
-                </div>
+  <!-- Main -->
+  <main class="main">
 
-                <div class="col-12 col-sm-6 col-xl-3">
-                    <div class="admin-kpi-card p-4">
-                        <div class="d-flex align-items-center justify-content-between mb-3">
-                            <span class="text-body-secondary small text-uppercase fw-semibold ls-1">Check-ins Hoy</span>
-                            <div class="p-2 bg-success bg-opacity-10 rounded-3 text-success">
-                                <i class="hicon hicon-bold hicon-calendar fs-4"></i>
-                            </div>
-                        </div>
-                        <h2 class="fw-bold text-white mb-1">5 Reservas</h2>
-                        <small class="text-success fw-semibold"><i class="hicon hicon-bold hicon-check me-1"></i>3 Llegaron • 2 Pendientes</small>
-                    </div>
-                </div>
-
-                <div class="col-12 col-sm-6 col-xl-3">
-                    <div class="admin-kpi-card p-4">
-                        <div class="d-flex align-items-center justify-content-between mb-3">
-                            <span class="text-body-secondary small text-uppercase fw-semibold ls-1">Ingresos Est. Mes</span>
-                            <div class="p-2 bg-info bg-opacity-10 rounded-3 text-info">
-                                <i class="hicon hicon-bold hicon-credit-card fs-4"></i>
-                            </div>
-                        </div>
-                        <h2 class="fw-bold text-white mb-1">$2.450.000</h2>
-                        <small class="text-info fw-semibold">+18% respecto al mes anterior</small>
-                    </div>
-                </div>
-
-                <div class="col-12 col-sm-6 col-xl-3">
-                    <div class="admin-kpi-card p-4">
-                        <div class="d-flex align-items-center justify-content-between mb-3">
-                            <span class="text-body-secondary small text-uppercase fw-semibold ls-1">Limpieza & Mantenimiento</span>
-                            <div class="p-2 bg-danger bg-opacity-10 rounded-3 text-danger">
-                                <i class="hicon hicon-bold hicon-room-service fs-4"></i>
-                            </div>
-                        </div>
-                        <h2 class="fw-bold text-white mb-1">3 Pendientes</h2>
-                        <small class="text-body-secondary">Habitaciones 102, 105 y Dormi 201</small>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Tabbed Navigation -->
-            <ul class="nav nav-tabs border-secondary border-opacity-25 mb-4" id="adminTabs" role="tablist">
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link active fw-semibold text-warning" id="reservas-tab" data-bs-toggle="tab" data-bs-target="#reservas-content" type="button" role="tab">📋 Lista de Reservas</button>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link fw-semibold text-body-secondary" id="habitaciones-tab" data-bs-toggle="tab" data-bs-target="#habitaciones-content" type="button" role="tab">🛏️ Estado de Habitaciones</button>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link fw-semibold text-body-secondary" id="ajustes-tab" data-bs-toggle="tab" data-bs-target="#ajustes-content" type="button" role="tab">⚙️ Ajustes Web & Tarifas</button>
-                </li>
-            </ul>
-
-            <!-- Tab Content -->
-            <div class="tab-content" id="adminTabsContent">
-                
-                <!-- Tab 1: Reservas Table -->
-                <div class="tab-pane fade show active" id="reservas-content" role="tabpanel">
-                    <div class="admin-table p-4 border border-secondary border-opacity-25">
-                        <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between mb-4 gap-3">
-                            <h5 class="fw-bold text-white mb-0 fs-6">Últimas Solicitudes & Reservas Recibidas</h5>
-                            <div class="d-flex gap-2">
-                                <input type="text" class="form-control form-control-sm bg-dark text-white border-secondary" placeholder="Buscar por huésped o código...">
-                                <select class="form-select form-select-sm bg-dark text-white border-secondary" style="max-width: 150px;">
-                                    <option value="all">Todos los estados</option>
-                                    <option value="confirmada">Confirmada</option>
-                                    <option value="checkin">Check-in</option>
-                                    <option value="pendiente">Pendiente</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="table-responsive">
-                            <table class="table table-dark table-hover align-middle mb-0">
-                                <thead>
-                                    <tr>
-                                        <th>Cód. Reserva</th>
-                                        <th>Huésped</th>
-                                        <th>Contacto / WhatsApp</th>
-                                        <th>Habitación / Tipo</th>
-                                        <th>Fechas (Check-in / Out)</th>
-                                        <th>Estado</th>
-                                        <th>Pago</th>
-                                        <th class="text-end">Acción</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td class="fw-mono text-warning">#HLM-9401</td>
-                                        <td class="fw-bold">Lucas Mateo Rossi</td>
-                                        <td><a href="https://wa.me/5491162573972" target="_blank" class="text-success text-decoration-none"><i class="hicon hicon-bold hicon-phone me-1"></i> +54 9 11 4821-9920</a></td>
-                                        <td>Habitación Estándar Privada</td>
-                                        <td>26 Ago - 29 Ago (3 Noches)</td>
-                                        <td><span class="badge badge-status-confirmed px-3 py-1 rounded-pill">Confirmada</span></td>
-                                        <td><span class="badge bg-success bg-opacity-25 text-success border border-success border-opacity-25 px-2 py-1">Seña 50%</span></td>
-                                        <td class="text-end">
-                                            <button class="btn btn-outline-warning btn-sm" onclick="alert('Detalles de reserva #HLM-9401')">Ver</button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="fw-mono text-warning">#HLM-9402</td>
-                                        <td class="fw-bold">Sophie Martin</td>
-                                        <td><a href="https://wa.me/5491162573972" target="_blank" class="text-success text-decoration-none"><i class="hicon hicon-bold hicon-phone me-1"></i> +33 6 12 34 56 78</a></td>
-                                        <td>Dormi Compartido 6 Camas (Mixto)</td>
-                                        <td>25 Ago - 28 Ago (3 Noches)</td>
-                                        <td><span class="badge badge-status-checkin px-3 py-1 rounded-pill">Check-in Realizado</span></td>
-                                        <td><span class="badge bg-success text-white px-2 py-1">Pagado 100%</span></td>
-                                        <td class="text-end">
-                                            <button class="btn btn-outline-warning btn-sm" onclick="alert('Detalles de reserva #HLM-9402')">Ver</button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="fw-mono text-warning">#HLM-9403</td>
-                                        <td class="fw-bold">Carlos Eduardo Silva</td>
-                                        <td><a href="https://wa.me/5491162573972" target="_blank" class="text-success text-decoration-none"><i class="hicon hicon-bold hicon-phone me-1"></i> +55 11 98765-4321</a></td>
-                                        <td>Suite Superior con Balcón</td>
-                                        <td>27 Ago - 31 Ago (4 Noches)</td>
-                                        <td><span class="badge badge-status-pending px-3 py-1 rounded-pill">Pendiente Pago</span></td>
-                                        <td><span class="badge bg-warning bg-opacity-25 text-warning border border-warning border-opacity-25 px-2 py-1">Pendiente</span></td>
-                                        <td class="text-end">
-                                            <button class="btn btn-outline-warning btn-sm" onclick="alert('Detalles de reserva #HLM-9403')">Ver</button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="fw-mono text-warning">#HLM-9404</td>
-                                        <td class="fw-bold">Emma Watson</td>
-                                        <td><a href="https://wa.me/5491162573972" target="_blank" class="text-success text-decoration-none"><i class="hicon hicon-bold hicon-phone me-1"></i> +44 7700 900077</a></td>
-                                        <td>Dormi Compartido 4 Camas (Femenino)</td>
-                                        <td>28 Ago - 02 Sep (5 Noches)</td>
-                                        <td><span class="badge badge-status-confirmed px-3 py-1 rounded-pill">Confirmada</span></td>
-                                        <td><span class="badge bg-success bg-opacity-25 text-success border border-success border-opacity-25 px-2 py-1">Seña 50%</span></td>
-                                        <td class="text-end">
-                                            <button class="btn btn-outline-warning btn-sm" onclick="alert('Detalles de reserva #HLM-9404')">Ver</button>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Tab 2: Estado de Habitaciones Grid -->
-                <div class="tab-pane fade" id="habitaciones-content" role="tabpanel">
-                    <div class="row g-4">
-                        <div class="col-12 col-md-6 col-lg-3">
-                            <div class="admin-kpi-card p-4 border-success">
-                                <div class="d-flex justify-content-between align-items-center mb-3">
-                                    <h6 class="fw-bold text-white mb-0">Habitación 101 - Suite</h6>
-                                    <span class="badge bg-success text-white">OCUPADA</span>
-                                </div>
-                                <p class="small text-body-secondary mb-2">Huésped: Carlos E. Silva</p>
-                                <p class="small text-body-secondary mb-3">Salida: 31 Ago</p>
-                                <div class="pt-2 border-top border-secondary border-opacity-25 d-flex justify-content-between align-items-center">
-                                    <span class="small text-success"><i class="hicon hicon-bold hicon-check me-1"></i>Limpia</span>
-                                    <button class="btn btn-sm btn-outline-secondary" onclick="alert('Habitación 101')">Gestionar</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-12 col-md-6 col-lg-3">
-                            <div class="admin-kpi-card p-4 border-info">
-                                <div class="d-flex justify-content-between align-items-center mb-3">
-                                    <h6 class="fw-bold text-white mb-0">Habitación 102 - Estándar</h6>
-                                    <span class="badge bg-info text-dark">DISPONIBLE</span>
-                                </div>
-                                <p class="small text-body-secondary mb-2">Cama Matrimonial</p>
-                                <p class="small text-body-secondary mb-3">Lista para Check-in</p>
-                                <div class="pt-2 border-top border-secondary border-opacity-25 d-flex justify-content-between align-items-center">
-                                    <span class="small text-info"><i class="hicon hicon-bold hicon-check me-1"></i>Limpia</span>
-                                    <button class="btn btn-sm btn-outline-secondary" onclick="alert('Habitación 102')">Asignar</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-12 col-md-6 col-lg-3">
-                            <div class="admin-kpi-card p-4 border-warning">
-                                <div class="d-flex justify-content-between align-items-center mb-3">
-                                    <h6 class="fw-bold text-white mb-0">Dormi 201 - 6 Camas</h6>
-                                    <span class="badge bg-warning text-dark">4 / 6 CAMAS</span>
-                                </div>
-                                <p class="small text-body-secondary mb-2">Compartido Mixto</p>
-                                <p class="small text-body-secondary mb-3">2 Camas Libres</p>
-                                <div class="pt-2 border-top border-secondary border-opacity-25 d-flex justify-content-between align-items-center">
-                                    <span class="small text-warning">Mantenimiento hoy</span>
-                                    <button class="btn btn-sm btn-outline-secondary" onclick="alert('Dormi 201')">Gestionar</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-12 col-md-6 col-lg-3">
-                            <div class="admin-kpi-card p-4 border-success">
-                                <div class="d-flex justify-content-between align-items-center mb-3">
-                                    <h6 class="fw-bold text-white mb-0">Dormi 202 - 4 Camas</h6>
-                                    <span class="badge bg-success text-white">4 / 4 LLENO</span>
-                                </div>
-                                <p class="small text-body-secondary mb-2">Compartido Femenino</p>
-                                <p class="small text-body-secondary mb-3">Completo</p>
-                                <div class="pt-2 border-top border-secondary border-opacity-25 d-flex justify-content-between align-items-center">
-                                    <span class="small text-success"><i class="hicon hicon-bold hicon-check me-1"></i>Limpia</span>
-                                    <button class="btn btn-sm btn-outline-secondary" onclick="alert('Dormi 202')">Gestionar</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Tab 3: Ajustes Web -->
-                <div class="tab-pane fade" id="ajustes-content" role="tabpanel">
-                    <div class="admin-table p-4 border border-secondary border-opacity-25">
-                        <h5 class="fw-bold text-white mb-4 fs-6">Configuración Rápida de la Landing Web</h5>
-                        
-                        <div class="row g-4">
-                            <div class="col-12 col-md-6">
-                                <div class="p-4 rounded-3 bg-dark border border-secondary border-opacity-25">
-                                    <h6 class="fw-bold text-warning mb-3">Estado del Botón de Reservas Directas</h6>
-                                    <div class="form-check form-switch mb-3">
-                                        <input class="form-check-input" type="checkbox" id="btnBookingSwitch" checked onchange="alert('El estado del motor de reservas ha sido actualizado.')">
-                                        <label class="form-check-label text-white" for="btnBookingSwitch">Redirigir a WhatsApp de Recepción</label>
-                                    </div>
-                                    <small class="text-body-secondary d-block">Número activo actual: +54 9 11 6257-3972</small>
-                                </div>
-                            </div>
-
-                            <div class="col-12 col-md-6">
-                                <div class="p-4 rounded-3 bg-dark border border-secondary border-opacity-25">
-                                    <h6 class="fw-bold text-warning mb-3">Banner de Promociones de Temporada</h6>
-                                    <div class="form-check form-switch mb-3">
-                                        <input class="form-check-input" type="checkbox" id="promoSwitch" checked onchange="alert('El banner de promos ha sido actualizado.')">
-                                        <label class="form-check-label text-white" for="promoSwitch">Mostrar Promo 15% OFF en 3+ Noches</label>
-                                    </div>
-                                    <small class="text-body-secondary d-block">Código promo visible: PORTEÑO15</small>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
-        </div>
-
+    <div class="topbar">
+      <div>
+        <span class="eyebrow">Hostel Downtown Las Morenas</span>
+        <h1>Dashboard de Operaciones</h1>
+      </div>
+      <div class="topbar-actions">
+        <button class="btn btn-ghost" onclick="location.reload()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></svg>
+          Actualizar
+        </button>
+        <button class="btn btn-primary" onclick="showToast('Formulario de reserva manual listo para integrar con el PMS.')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+          Nueva Reserva
+        </button>
+      </div>
     </div>
 
-    <!-- JS SCRIPTS -->
-    <script src="assets/js/plugins.js"></script>
-    <script src="assets/js/theme.js"></script>
-    <script>
-        // Check if previously logged in this session
-        if (sessionStorage.getItem('adminLoggedIn') === 'true') {
-            document.getElementById('adminLoginOverlay').classList.add('d-none');
-            document.getElementById('adminDashboardContent').classList.remove('d-none');
-        }
+    <!-- KPIs -->
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-top">
+          <span class="eyebrow">Ocupación Hoy</span>
+          <div class="kpi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 18v-6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v6"/><path d="M3 12V7a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v1"/><path d="M3 21h18"/></svg></div>
+        </div>
+        <div class="num">88%</div>
+        <div class="kpi-bar"><span style="width:88%;"></span></div>
+        <div class="kpi-note">22 de 25 habitaciones / camas ocupadas</div>
+      </div>
 
-        function checkAdminPass() {
-            var pass = document.getElementById('adminPasswordInput').value;
-            // Accepts 'admin', '1234', or 'morenas'
-            if (pass === 'admin' || pass === '1234' || pass === 'morenas') {
-                sessionStorage.setItem('adminLoggedIn', 'true');
-                document.getElementById('loginErrorMsg').classList.add('d-none');
-                document.getElementById('adminLoginOverlay').classList.add('d-none');
-                document.getElementById('adminDashboardContent').classList.remove('d-none');
-            } else {
-                document.getElementById('loginErrorMsg').classList.remove('d-none');
-            }
-        }
+      <div class="kpi-card">
+        <div class="kpi-top">
+          <span class="eyebrow">Check-ins Hoy</span>
+          <div class="kpi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 3v3M16 3v3"/></svg></div>
+        </div>
+        <div class="num">5 Reservas</div>
+        <div class="kpi-note up">3 llegaron · 2 pendientes</div>
+      </div>
 
-        function lockAdminPanel() {
-            sessionStorage.removeItem('adminLoggedIn');
-            location.reload();
-        }
-    </script>
+      <div class="kpi-card">
+        <div class="kpi-top">
+          <span class="eyebrow">Ingresos Est. del Mes</span>
+          <div class="kpi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg></div>
+        </div>
+        <div class="num">$2.450.000</div>
+        <div class="kpi-note up">+18% respecto al mes anterior</div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-top">
+          <span class="eyebrow">Limpieza & Mantenimiento</span>
+          <div class="kpi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 2v6M12 22v-6M4.9 4.9l4.2 4.2M14.9 14.9l4.2 4.2M2 12h6M16 12h6M4.9 19.1l4.2-4.2M14.9 9.1l4.2-4.2"/></svg></div>
+        </div>
+        <div class="num">3 Pendientes</div>
+        <div class="kpi-note">Habitaciones 102, 105 y Dormi 201</div>
+      </div>
+    </div>
+
+    <!-- PANEL: RESERVAS -->
+    <section id="panel-reservas" class="panel active">
+      <div class="card-block">
+        <div class="card-block-head">
+          <h2>Últimas solicitudes & reservas recibidas</h2>
+          <div class="toolbar">
+            <input type="text" id="searchInput" class="input-x" placeholder="Buscar por huésped o código..." oninput="filterTable()">
+            <select id="statusFilter" class="select-x" onchange="filterTable()">
+              <option value="all">Todos los estados</option>
+              <option value="confirmada">Confirmada</option>
+              <option value="checkin">Check-in</option>
+              <option value="pendiente">Pendiente</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Cód.</th>
+                <th>Huésped</th>
+                <th>Contacto</th>
+                <th>Habitación / Tipo</th>
+                <th>Fechas</th>
+                <th>Estado</th>
+                <th>Pago</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="reservationsBody">
+              <tr data-status="confirmada" data-search="lucas mateo rossi hlm-9401">
+                <td class="code">#HLM-9401</td>
+                <td class="guest">Lucas Mateo Rossi</td>
+                <td><a href="https://wa.me/5491162573972" target="_blank" class="wa-link"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.2-1.8-.9-2-1s-.5-.1-.7.1-.8 1-.9 1.2-.3.2-.6.1a6.9 6.9 0 0 1-2-1.3 7.7 7.7 0 0 1-1.4-1.7c-.1-.3 0-.4.1-.6l.4-.5.2-.4c0-.1 0-.3 0-.4s-.7-1.6-.9-2.2-.5-.5-.7-.5h-.6a1.2 1.2 0 0 0-.9.4A3.5 3.5 0 0 0 6.4 10c0 1.3.9 2.6 1 2.8s1.8 2.8 4.4 3.9a5 5 0 0 0 2.9.6c.5 0 1.5-.6 1.7-1.2s.2-1.1.1-1.2-.2-.2-.5-.4Z"/><path d="M12 2a10 10 0 0 0-8.6 15L2 22l5.2-1.4A10 10 0 1 0 12 2Zm0 18a8 8 0 0 1-4.1-1.1l-.3-.2-3.1.8.8-3-.2-.3A8 8 0 1 1 12 20Z"/></svg> +54 9 11 4821-9920</a></td>
+                <td>Habitación Estándar Privada</td>
+                <td>26 Ago – 29 Ago <span style="color:var(--text-mute)">(3n)</span></td>
+                <td><span class="pill pill-confirmed">Confirmada</span></td>
+                <td><span class="pay-tag deposit">Seña 50%</span></td>
+                <td style="text-align:right;"><button class="row-action" onclick="showToast('Detalle de reserva #HLM-9401')">Ver</button></td>
+              </tr>
+              <tr data-status="checkin" data-search="sophie martin hlm-9402">
+                <td class="code">#HLM-9402</td>
+                <td class="guest">Sophie Martin</td>
+                <td><a href="https://wa.me/5491162573972" target="_blank" class="wa-link"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.2-1.8-.9-2-1s-.5-.1-.7.1-.8 1-.9 1.2-.3.2-.6.1a6.9 6.9 0 0 1-2-1.3 7.7 7.7 0 0 1-1.4-1.7c-.1-.3 0-.4.1-.6l.4-.5.2-.4c0-.1 0-.3 0-.4s-.7-1.6-.9-2.2-.5-.5-.7-.5h-.6a1.2 1.2 0 0 0-.9.4A3.5 3.5 0 0 0 6.4 10c0 1.3.9 2.6 1 2.8s1.8 2.8 4.4 3.9a5 5 0 0 0 2.9.6c.5 0 1.5-.6 1.7-1.2s.2-1.1.1-1.2-.2-.2-.5-.4Z"/><path d="M12 2a10 10 0 0 0-8.6 15L2 22l5.2-1.4A10 10 0 1 0 12 2Zm0 18a8 8 0 0 1-4.1-1.1l-.3-.2-3.1.8.8-3-.2-.3A8 8 0 1 1 12 20Z"/></svg> +33 6 12 34 56 78</a></td>
+                <td>Dormi Compartido 6 Camas (Mixto)</td>
+                <td>25 Ago – 28 Ago <span style="color:var(--text-mute)">(3n)</span></td>
+                <td><span class="pill pill-checkin">Check-in Realizado</span></td>
+                <td><span class="pay-tag paid">Pagado 100%</span></td>
+                <td style="text-align:right;"><button class="row-action" onclick="showToast('Detalle de reserva #HLM-9402')">Ver</button></td>
+              </tr>
+              <tr data-status="pendiente" data-search="carlos eduardo silva hlm-9403">
+                <td class="code">#HLM-9403</td>
+                <td class="guest">Carlos Eduardo Silva</td>
+                <td><a href="https://wa.me/5491162573972" target="_blank" class="wa-link"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.2-1.8-.9-2-1s-.5-.1-.7.1-.8 1-.9 1.2-.3.2-.6.1a6.9 6.9 0 0 1-2-1.3 7.7 7.7 0 0 1-1.4-1.7c-.1-.3 0-.4.1-.6l.4-.5.2-.4c0-.1 0-.3 0-.4s-.7-1.6-.9-2.2-.5-.5-.7-.5h-.6a1.2 1.2 0 0 0-.9.4A3.5 3.5 0 0 0 6.4 10c0 1.3.9 2.6 1 2.8s1.8 2.8 4.4 3.9a5 5 0 0 0 2.9.6c.5 0 1.5-.6 1.7-1.2s.2-1.1.1-1.2-.2-.2-.5-.4Z"/><path d="M12 2a10 10 0 0 0-8.6 15L2 22l5.2-1.4A10 10 0 1 0 12 2Zm0 18a8 8 0 0 1-4.1-1.1l-.3-.2-3.1.8.8-3-.2-.3A8 8 0 1 1 12 20Z"/></svg> +55 11 98765-4321</a></td>
+                <td>Suite Superior con Balcón</td>
+                <td>27 Ago – 31 Ago <span style="color:var(--text-mute)">(4n)</span></td>
+                <td><span class="pill pill-pending">Pendiente Pago</span></td>
+                <td><span class="pay-tag due">Pendiente</span></td>
+                <td style="text-align:right;"><button class="row-action" onclick="showToast('Detalle de reserva #HLM-9403')">Ver</button></td>
+              </tr>
+              <tr data-status="confirmada" data-search="emma watson hlm-9404">
+                <td class="code">#HLM-9404</td>
+                <td class="guest">Emma Watson</td>
+                <td><a href="https://wa.me/5491162573972" target="_blank" class="wa-link"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.2-1.8-.9-2-1s-.5-.1-.7.1-.8 1-.9 1.2-.3.2-.6.1a6.9 6.9 0 0 1-2-1.3 7.7 7.7 0 0 1-1.4-1.7c-.1-.3 0-.4.1-.6l.4-.5.2-.4c0-.1 0-.3 0-.4s-.7-1.6-.9-2.2-.5-.5-.7-.5h-.6a1.2 1.2 0 0 0-.9.4A3.5 3.5 0 0 0 6.4 10c0 1.3.9 2.6 1 2.8s1.8 2.8 4.4 3.9a5 5 0 0 0 2.9.6c.5 0 1.5-.6 1.7-1.2s.2-1.1.1-1.2-.2-.2-.5-.4Z"/><path d="M12 2a10 10 0 0 0-8.6 15L2 22l5.2-1.4A10 10 0 1 0 12 2Zm0 18a8 8 0 0 1-4.1-1.1l-.3-.2-3.1.8.8-3-.2-.3A8 8 0 1 1 12 20Z"/></svg> +44 7700 900077</a></td>
+                <td>Dormi Compartido 4 Camas (Femenino)</td>
+                <td>28 Ago – 02 Sep <span style="color:var(--text-mute)">(5n)</span></td>
+                <td><span class="pill pill-confirmed">Confirmada</span></td>
+                <td><span class="pay-tag deposit">Seña 50%</span></td>
+                <td style="text-align:right;"><button class="row-action" onclick="showToast('Detalle de reserva #HLM-9404')">Ver</button></td>
+              </tr>
+            </tbody>
+          </table>
+          <div id="emptyState" class="empty-row" style="display:none;">No se encontraron reservas con esos criterios.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PANEL: HABITACIONES -->
+    <section id="panel-habitaciones" class="panel">
+      <div class="room-grid">
+        <div class="room-card occupied">
+          <div class="room-head"><h3>Habitación 101 · Suite</h3><span class="pill pill-confirmed">Ocupada</span></div>
+          <p class="room-meta">Huésped: Carlos E. Silva</p>
+          <p class="room-meta sub">Salida: 31 Ago</p>
+          <div class="room-foot">
+            <span class="clean-status ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>Limpia</span>
+            <button class="row-action" onclick="showToast('Gestionando Habitación 101')">Gestionar</button>
+          </div>
+        </div>
+        <div class="room-card available">
+          <div class="room-head"><h3>Habitación 102 · Estándar</h3><span class="pill pill-checkin">Disponible</span></div>
+          <p class="room-meta">Cama Matrimonial</p>
+          <p class="room-meta sub">Lista para check-in</p>
+          <div class="room-foot">
+            <span class="clean-status ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>Limpia</span>
+            <button class="row-action" onclick="showToast('Asignando Habitación 102')">Asignar</button>
+          </div>
+        </div>
+        <div class="room-card maint">
+          <div class="room-head"><h3>Dormi 201 · 6 Camas</h3><span class="pill pill-pending">4 / 6 camas</span></div>
+          <p class="room-meta">Compartido Mixto</p>
+          <p class="room-meta sub">2 camas libres</p>
+          <div class="room-foot">
+            <span class="clean-status warn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01M10.3 3.9L2.7 17.3a2 2 0 0 0 1.7 3h15.2a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/></svg>Mantenimiento hoy</span>
+            <button class="row-action" onclick="showToast('Gestionando Dormi 201')">Gestionar</button>
+          </div>
+        </div>
+        <div class="room-card full">
+          <div class="room-head"><h3>Dormi 202 · 4 Camas</h3><span class="pill pill-full">4 / 4 lleno</span></div>
+          <p class="room-meta">Compartido Femenino</p>
+          <p class="room-meta sub">Completo</p>
+          <div class="room-foot">
+            <span class="clean-status ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>Limpia</span>
+            <button class="row-action" onclick="showToast('Gestionando Dormi 202')">Gestionar</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PANEL: AJUSTES -->
+    <section id="panel-ajustes" class="panel">
+      <div class="card-block">
+        <h2 style="margin-bottom:1.5rem;">Configuración rápida de la landing web</h2>
+        <div class="settings-grid">
+          <div class="setting-card">
+            <h4>Botón de Reservas Directas</h4>
+            <div class="switch-row">
+              <span class="lbl">Redirigir a WhatsApp de Recepción</span>
+              <label class="switch"><input type="checkbox" checked onchange="showToast('Estado del motor de reservas actualizado.')"><span class="slider"></span></label>
+            </div>
+            <p class="setting-note">Número activo actual: +54 9 11 6257-3972</p>
+          </div>
+          <div class="setting-card">
+            <h4>Banner de Promociones de Temporada</h4>
+            <div class="switch-row">
+              <span class="lbl">Mostrar Promo 15% OFF en 3+ noches</span>
+              <label class="switch"><input type="checkbox" checked onchange="showToast('Banner de promociones actualizado.')"><span class="slider"></span></label>
+            </div>
+            <p class="setting-note">Código promo visible: PORTEÑO15</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- Toast -->
+<div id="toast" class="toast-x">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+  <span id="toastMsg"></span>
+</div>
+
+<script>
+  // Session check
+  if (sessionStorage.getItem('adminLoggedIn') === 'true') {
+    document.getElementById('adminLoginOverlay').style.display = 'none';
+    document.getElementById('adminDashboardContent').style.display = 'flex';
+  }
+
+  function checkAdminPass() {
+    var pass = document.getElementById('adminPasswordInput').value;
+    if (pass === 'admin' || pass === '1234' || pass === 'morenas') {
+      sessionStorage.setItem('adminLoggedIn', 'true');
+      document.getElementById('loginErrorMsg').classList.remove('show');
+      document.getElementById('adminLoginOverlay').style.display = 'none';
+      document.getElementById('adminDashboardContent').style.display = 'flex';
+    } else {
+      document.getElementById('loginErrorMsg').classList.add('show');
+    }
+  }
+
+  function lockAdminPanel() {
+    sessionStorage.removeItem('adminLoggedIn');
+    location.reload();
+  }
+
+  function switchPanel(name, el) {
+    document.querySelectorAll('.nav-link').forEach(function(n){ n.classList.remove('active'); });
+    el.classList.add('active');
+    document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('active'); });
+    document.getElementById('panel-' + name).classList.add('active');
+  }
+
+  function filterTable() {
+    var q = document.getElementById('searchInput').value.trim().toLowerCase();
+    var status = document.getElementById('statusFilter').value;
+    var rows = document.querySelectorAll('#reservationsBody tr');
+    var visibleCount = 0;
+    rows.forEach(function(row){
+      var matchesText = row.getAttribute('data-search').includes(q);
+      var matchesStatus = (status === 'all') || (row.getAttribute('data-status') === status);
+      var show = matchesText && matchesStatus;
+      row.style.display = show ? '' : 'none';
+      if (show) visibleCount++;
+    });
+    document.getElementById('emptyState').style.display = visibleCount === 0 ? 'block' : 'none';
+  }
+
+  var toastTimer;
+  function showToast(msg) {
+    var toast = document.getElementById('toast');
+    document.getElementById('toastMsg').textContent = msg;
+    toast.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){ toast.classList.remove('show'); }, 3200);
+  }
+</script>
 </body>
 </html>
