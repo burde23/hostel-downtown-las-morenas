@@ -103,3 +103,35 @@
         line-height: 1.25 !important;
     }
 }
+
+
+/* ==========================================================================
+   HERO LOCATION BELOW TITLE & ABOUT MOBILE HEADING FIX
+   ========================================================================== */
+
+.hero-sub-location {
+    font-size: 0.85rem !important;
+    letter-spacing: 0.18em !important;
+    color: #C6A664 !important;
+    text-shadow: 0px 2px 8px rgba(0, 0, 0, 0.9) !important;
+}
+
+@media (max-width: 767.98px) {
+    .hero-sub-location {
+        font-size: 0.72rem !important;
+        letter-spacing: 0.12em !important;
+    }
+
+    /* Make About section heading smaller on mobile to prevent overflow */
+    .hero-about-heading {
+        font-size: 1.35rem !important;
+        line-height: 1.3 !important;
+        margin-bottom: 1.25rem !important;
+    }
+
+    #about p.text-primary {
+        font-size: 0.78rem !important;
+        letter-spacing: 0.12em !important;
+        margin-bottom: 0.75rem !important;
+    }
+}
