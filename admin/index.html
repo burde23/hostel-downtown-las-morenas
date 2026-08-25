@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="es" data-bs-theme="dark">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Control Staff • Hostel Downtown Las Morenas</title>
+    <link href="../assets/img/logos/favicon.png" rel="shortcut icon">
+    <link href="../assets/fonts/hotel-icons/hotel-icons.min.css" rel="stylesheet">
+    <link href="../assets/css/plugins.css" rel="stylesheet">
+    <link href="../assets/css/theme.css" rel="stylesheet">
+    <link href="../assets/css/custom.css" rel="stylesheet">
+    <style>
+        .admin-kpi-card {
+            background: rgba(30, 31, 36, 0.85);
+            border: 1px solid rgba(198, 166, 100, 0.25);
+            border-radius: 1rem;
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+        .admin-kpi-card:hover {
+            border-color: #C6A664;
+            transform: translateY(-2px);
+        }
+        .admin-table {
+            background: rgba(22, 24, 28, 0.9);
+            border-radius: 1rem;
+            overflow: hidden;
+        }
+        .admin-table th {
+            background: rgba(30, 31, 36, 0.95);
+            color: #C6A664;
+            font-size: 0.82rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            border-bottom: 1px solid rgba(198, 166, 100, 0.3);
+        }
+        .login-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(12, 14, 18, 0.96);
+            backdrop-filter: blur(16px);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .login-card {
+            background: rgba(30, 31, 36, 0.95);
+            border: 1px solid rgba(198, 166, 100, 0.4);
+            border-radius: 1.25rem;
+            max-width: 420px;
+            width: 90%;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+        }
+        .badge-status-confirmed { background: rgba(25, 135, 84, 0.25); color: #2ecc71; border: 1px solid rgba(46, 204, 113, 0.4); }
+        .badge-status-pending { background: rgba(255, 193, 7, 0.25); color: #f1c40f; border: 1px solid rgba(241, 196, 15, 0.4); }
+        .badge-status-checkin { background: rgba(13, 110, 253, 0.25); color: #3498db; border: 1px solid rgba(52, 152, 219, 0.4); }
+    </style>
+</head>
+<body class="bg-body-tertiary text-body">
+
+    <!-- PASSWORD SECURITY MODAL / OVERLAY -->
+    <div id="adminLoginOverlay" class="login-overlay">
+        <div class="login-card p-5 text-center">
+            <img src="../assets/img/logos/logo-hero-doors.png" alt="Hostel Downtown Las Morenas" class="img-fluid mb-3" style="max-height: 70px;">
+            <h5 class="fw-bold text-white mb-1">Panel de Gestión Staff</h5>
+            <p class="text-body-secondary small mb-4">Ingrese la clave de acceso de recepción para continuar</p>
+            
+            <form id="adminLoginForm" onsubmit="event.preventDefault(); checkAdminPass();">
+                <div class="mb-3">
+                    <input type="password" id="adminPasswordInput" class="form-control form-control-lg text-center bg-dark text-white border-secondary rounded-3 fs-6" placeholder="Clave (Ej: 1234)" autofocus required>
+                </div>
+                <div id="loginErrorMsg" class="alert alert-danger py-2 small d-none mb-3" style="background: rgba(220,53,69,0.2); border-color: rgba(220,53,69,0.4); color: #ff6b6b;">
+                    Clave incorrecta. Intente nuevamente (Prueba: 1234 o admin).
+                </div>
+                <button type="submit" class="btn btn-primary btn-lg w-100 fw-bold rounded-3">Acceder al Dashboard</button>
+            </form>
+            <div class="mt-4 pt-3 border-top border-secondary border-opacity-25">
+                <small class="text-body-secondary fs-8">Hostel Downtown Las Morenas • Maipú 556, CABA</small>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN ADMIN DASHBOARD -->
+    <div id="adminDashboardContent" class="d-none">
+        
+        <!-- Admin Header Navigation -->
+        <nav class="navbar navbar-expand-lg bg-dark bg-opacity-75 border-bottom border-secondary border-opacity-25 py-3 sticky-top backdrop-blur">
+            <div class="container-fluid px-4">
+                <a class="navbar-brand d-flex align-items-center" href="index.html">
+                    <img src="../assets/img/logos/logo-header-text.png" alt="Hostel Downtown Las Morenas" height="38">
+                    <span class="badge bg-warning text-dark fw-bold ms-3 px-2 py-1 fs-8">STAFF PANEL</span>
+                </a>
+                <div class="d-flex align-items-center gap-3">
+                    <div class="d-none d-md-flex align-items-center me-2">
+                        <i class="hicon hicon-bold hicon-reception text-warning me-2 fs-5"></i>
+                        <span class="small text-body-secondary">Recepción: <strong class="text-white">Turno Mañana / Turno Tarde</strong></span>
+                    </div>
+                    <a href="index.html" class="btn btn-outline-secondary btn-sm rounded-pill px-3"><i class="hicon hicon-bold hicon-home me-1"></i> Ir a la Web</a>
+                    <button class="btn btn-outline-danger btn-sm rounded-pill px-3" onclick="lockAdminPanel()"><i class="hicon hicon-bold hicon-lock me-1"></i> Bloquear</button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Admin Content Body -->
+        <div class="container-fluid px-4 py-5">
+            
+            <!-- Page Title & Quick Actions -->
+            <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between mb-5">
+                <div>
+                    <h3 class="fw-bold text-white mb-1 h-special-font">Dashboard de Operaciones</h3>
+                    <p class="text-body-secondary mb-0 small">Gestión en tiempo real de reservas, disponibilidad y mantenimiento</p>
+                </div>
+                <div class="mt-3 mt-md-0 d-flex gap-2">
+                    <button class="btn btn-warning btn-sm fw-bold px-3 py-2 rounded-3 text-dark" onclick="alert('Modal de Nueva Reserva Manual preparado para integración PMS')">+ Nueva Reserva Manual</button>
+                    <button class="btn btn-dark border border-secondary border-opacity-50 btn-sm text-white px-3 py-2 rounded-3" onclick="location.reload()"><i class="hicon hicon-bold hicon-refresh me-1"></i> Actualizar</button>
+                </div>
+            </div>
+
+            <!-- KPI Cards Row -->
+            <div class="row g-4 mb-5">
+                <div class="col-12 col-sm-6 col-xl-3">
+                    <div class="admin-kpi-card p-4">
+                        <div class="d-flex align-items-center justify-content-between mb-3">
+                            <span class="text-body-secondary small text-uppercase fw-semibold ls-1">Ocupación Hoy</span>
+                            <div class="p-2 bg-warning bg-opacity-10 rounded-3 text-warning">
+                                <i class="hicon hicon-bold hicon-bed fs-4"></i>
+                            </div>
+                        </div>
+                        <h2 class="fw-bold text-white mb-1">88%</h2>
+                        <div class="progress bg-dark mb-2" style="height: 6px;">
+                            <div class="progress-bar bg-warning" role="progressbar" style="width: 88%" aria-valuenow="88" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                        <small class="text-body-secondary">22 de 25 habitaciones/camas ocupadas</small>
+                    </div>
+                </div>
+
+                <div class="col-12 col-sm-6 col-xl-3">
+                    <div class="admin-kpi-card p-4">
+                        <div class="d-flex align-items-center justify-content-between mb-3">
+                            <span class="text-body-secondary small text-uppercase fw-semibold ls-1">Check-ins Hoy</span>
+                            <div class="p-2 bg-success bg-opacity-10 rounded-3 text-success">
+                                <i class="hicon hicon-bold hicon-calendar fs-4"></i>
+                            </div>
+                        </div>
+                        <h2 class="fw-bold text-white mb-1">5 Reservas</h2>
+                        <small class="text-success fw-semibold"><i class="hicon hicon-bold hicon-check me-1"></i>3 Llegaron • 2 Pendientes</small>
+                    </div>
+                </div>
+
+                <div class="col-12 col-sm-6 col-xl-3">
+                    <div class="admin-kpi-card p-4">
+                        <div class="d-flex align-items-center justify-content-between mb-3">
+                            <span class="text-body-secondary small text-uppercase fw-semibold ls-1">Ingresos Est. Mes</span>
+                            <div class="p-2 bg-info bg-opacity-10 rounded-3 text-info">
+                                <i class="hicon hicon-bold hicon-credit-card fs-4"></i>
+                            </div>
+                        </div>
+                        <h2 class="fw-bold text-white mb-1">$2.450.000</h2>
+                        <small class="text-info fw-semibold">+18% respecto al mes anterior</small>
+                    </div>
+                </div>
+
+                <div class="col-12 col-sm-6 col-xl-3">
+                    <div class="admin-kpi-card p-4">
+                        <div class="d-flex align-items-center justify-content-between mb-3">
+                            <span class="text-body-secondary small text-uppercase fw-semibold ls-1">Limpieza & Mantenimiento</span>
+                            <div class="p-2 bg-danger bg-opacity-10 rounded-3 text-danger">
+                                <i class="hicon hicon-bold hicon-room-service fs-4"></i>
+                            </div>
+                        </div>
+                        <h2 class="fw-bold text-white mb-1">3 Pendientes</h2>
+                        <small class="text-body-secondary">Habitaciones 102, 105 y Dormi 201</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tabbed Navigation -->
+            <ul class="nav nav-tabs border-secondary border-opacity-25 mb-4" id="adminTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active fw-semibold text-warning" id="reservas-tab" data-bs-toggle="tab" data-bs-target="#reservas-content" type="button" role="tab">📋 Lista de Reservas</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link fw-semibold text-body-secondary" id="habitaciones-tab" data-bs-toggle="tab" data-bs-target="#habitaciones-content" type="button" role="tab">🛏️ Estado de Habitaciones</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link fw-semibold text-body-secondary" id="ajustes-tab" data-bs-toggle="tab" data-bs-target="#ajustes-content" type="button" role="tab">⚙️ Ajustes Web & Tarifas</button>
+                </li>
+            </ul>
+
+            <!-- Tab Content -->
+            <div class="tab-content" id="adminTabsContent">
+                
+                <!-- Tab 1: Reservas Table -->
+                <div class="tab-pane fade show active" id="reservas-content" role="tabpanel">
+                    <div class="admin-table p-4 border border-secondary border-opacity-25">
+                        <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between mb-4 gap-3">
+                            <h5 class="fw-bold text-white mb-0 fs-6">Últimas Solicitudes & Reservas Recibidas</h5>
+                            <div class="d-flex gap-2">
+                                <input type="text" class="form-control form-control-sm bg-dark text-white border-secondary" placeholder="Buscar por huésped o código...">
+                                <select class="form-select form-select-sm bg-dark text-white border-secondary" style="max-width: 150px;">
+                                    <option value="all">Todos los estados</option>
+                                    <option value="confirmada">Confirmada</option>
+                                    <option value="checkin">Check-in</option>
+                                    <option value="pendiente">Pendiente</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="table table-dark table-hover align-middle mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Cód. Reserva</th>
+                                        <th>Huésped</th>
+                                        <th>Contacto / WhatsApp</th>
+                                        <th>Habitación / Tipo</th>
+                                        <th>Fechas (Check-in / Out)</th>
+                                        <th>Estado</th>
+                                        <th>Pago</th>
+                                        <th class="text-end">Acción</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="fw-mono text-warning">#HLM-9401</td>
+                                        <td class="fw-bold">Lucas Mateo Rossi</td>
+                                        <td><a href="https://wa.me/5491162573972" target="_blank" class="text-success text-decoration-none"><i class="hicon hicon-bold hicon-phone me-1"></i> +54 9 11 4821-9920</a></td>
+                                        <td>Habitación Estándar Privada</td>
+                                        <td>26 Ago - 29 Ago (3 Noches)</td>
+                                        <td><span class="badge badge-status-confirmed px-3 py-1 rounded-pill">Confirmada</span></td>
+                                        <td><span class="badge bg-success bg-opacity-25 text-success border border-success border-opacity-25 px-2 py-1">Seña 50%</span></td>
+                                        <td class="text-end">
+                                            <button class="btn btn-outline-warning btn-sm" onclick="alert('Detalles de reserva #HLM-9401')">Ver</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-mono text-warning">#HLM-9402</td>
+                                        <td class="fw-bold">Sophie Martin</td>
+                                        <td><a href="https://wa.me/5491162573972" target="_blank" class="text-success text-decoration-none"><i class="hicon hicon-bold hicon-phone me-1"></i> +33 6 12 34 56 78</a></td>
+                                        <td>Dormi Compartido 6 Camas (Mixto)</td>
+                                        <td>25 Ago - 28 Ago (3 Noches)</td>
+                                        <td><span class="badge badge-status-checkin px-3 py-1 rounded-pill">Check-in Realizado</span></td>
+                                        <td><span class="badge bg-success text-white px-2 py-1">Pagado 100%</span></td>
+                                        <td class="text-end">
+                                            <button class="btn btn-outline-warning btn-sm" onclick="alert('Detalles de reserva #HLM-9402')">Ver</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-mono text-warning">#HLM-9403</td>
+                                        <td class="fw-bold">Carlos Eduardo Silva</td>
+                                        <td><a href="https://wa.me/5491162573972" target="_blank" class="text-success text-decoration-none"><i class="hicon hicon-bold hicon-phone me-1"></i> +55 11 98765-4321</a></td>
+                                        <td>Suite Superior con Balcón</td>
+                                        <td>27 Ago - 31 Ago (4 Noches)</td>
+                                        <td><span class="badge badge-status-pending px-3 py-1 rounded-pill">Pendiente Pago</span></td>
+                                        <td><span class="badge bg-warning bg-opacity-25 text-warning border border-warning border-opacity-25 px-2 py-1">Pendiente</span></td>
+                                        <td class="text-end">
+                                            <button class="btn btn-outline-warning btn-sm" onclick="alert('Detalles de reserva #HLM-9403')">Ver</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-mono text-warning">#HLM-9404</td>
+                                        <td class="fw-bold">Emma Watson</td>
+                                        <td><a href="https://wa.me/5491162573972" target="_blank" class="text-success text-decoration-none"><i class="hicon hicon-bold hicon-phone me-1"></i> +44 7700 900077</a></td>
+                                        <td>Dormi Compartido 4 Camas (Femenino)</td>
+                                        <td>28 Ago - 02 Sep (5 Noches)</td>
+                                        <td><span class="badge badge-status-confirmed px-3 py-1 rounded-pill">Confirmada</span></td>
+                                        <td><span class="badge bg-success bg-opacity-25 text-success border border-success border-opacity-25 px-2 py-1">Seña 50%</span></td>
+                                        <td class="text-end">
+                                            <button class="btn btn-outline-warning btn-sm" onclick="alert('Detalles de reserva #HLM-9404')">Ver</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab 2: Estado de Habitaciones Grid -->
+                <div class="tab-pane fade" id="habitaciones-content" role="tabpanel">
+                    <div class="row g-4">
+                        <div class="col-12 col-md-6 col-lg-3">
+                            <div class="admin-kpi-card p-4 border-success">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h6 class="fw-bold text-white mb-0">Habitación 101 - Suite</h6>
+                                    <span class="badge bg-success text-white">OCUPADA</span>
+                                </div>
+                                <p class="small text-body-secondary mb-2">Huésped: Carlos E. Silva</p>
+                                <p class="small text-body-secondary mb-3">Salida: 31 Ago</p>
+                                <div class="pt-2 border-top border-secondary border-opacity-25 d-flex justify-content-between align-items-center">
+                                    <span class="small text-success"><i class="hicon hicon-bold hicon-check me-1"></i>Limpia</span>
+                                    <button class="btn btn-sm btn-outline-secondary" onclick="alert('Habitación 101')">Gestionar</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-6 col-lg-3">
+                            <div class="admin-kpi-card p-4 border-info">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h6 class="fw-bold text-white mb-0">Habitación 102 - Estándar</h6>
+                                    <span class="badge bg-info text-dark">DISPONIBLE</span>
+                                </div>
+                                <p class="small text-body-secondary mb-2">Cama Matrimonial</p>
+                                <p class="small text-body-secondary mb-3">Lista para Check-in</p>
+                                <div class="pt-2 border-top border-secondary border-opacity-25 d-flex justify-content-between align-items-center">
+                                    <span class="small text-info"><i class="hicon hicon-bold hicon-check me-1"></i>Limpia</span>
+                                    <button class="btn btn-sm btn-outline-secondary" onclick="alert('Habitación 102')">Asignar</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-6 col-lg-3">
+                            <div class="admin-kpi-card p-4 border-warning">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h6 class="fw-bold text-white mb-0">Dormi 201 - 6 Camas</h6>
+                                    <span class="badge bg-warning text-dark">4 / 6 CAMAS</span>
+                                </div>
+                                <p class="small text-body-secondary mb-2">Compartido Mixto</p>
+                                <p class="small text-body-secondary mb-3">2 Camas Libres</p>
+                                <div class="pt-2 border-top border-secondary border-opacity-25 d-flex justify-content-between align-items-center">
+                                    <span class="small text-warning">Mantenimiento hoy</span>
+                                    <button class="btn btn-sm btn-outline-secondary" onclick="alert('Dormi 201')">Gestionar</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-6 col-lg-3">
+                            <div class="admin-kpi-card p-4 border-success">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h6 class="fw-bold text-white mb-0">Dormi 202 - 4 Camas</h6>
+                                    <span class="badge bg-success text-white">4 / 4 LLENO</span>
+                                </div>
+                                <p class="small text-body-secondary mb-2">Compartido Femenino</p>
+                                <p class="small text-body-secondary mb-3">Completo</p>
+                                <div class="pt-2 border-top border-secondary border-opacity-25 d-flex justify-content-between align-items-center">
+                                    <span class="small text-success"><i class="hicon hicon-bold hicon-check me-1"></i>Limpia</span>
+                                    <button class="btn btn-sm btn-outline-secondary" onclick="alert('Dormi 202')">Gestionar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab 3: Ajustes Web -->
+                <div class="tab-pane fade" id="ajustes-content" role="tabpanel">
+                    <div class="admin-table p-4 border border-secondary border-opacity-25">
+                        <h5 class="fw-bold text-white mb-4 fs-6">Configuración Rápida de la Landing Web</h5>
+                        
+                        <div class="row g-4">
+                            <div class="col-12 col-md-6">
+                                <div class="p-4 rounded-3 bg-dark border border-secondary border-opacity-25">
+                                    <h6 class="fw-bold text-warning mb-3">Estado del Botón de Reservas Directas</h6>
+                                    <div class="form-check form-switch mb-3">
+                                        <input class="form-check-input" type="checkbox" id="btnBookingSwitch" checked onchange="alert('El estado del motor de reservas ha sido actualizado.')">
+                                        <label class="form-check-label text-white" for="btnBookingSwitch">Redirigir a WhatsApp de Recepción</label>
+                                    </div>
+                                    <small class="text-body-secondary d-block">Número activo actual: +54 9 11 6257-3972</small>
+                                </div>
+                            </div>
+
+                            <div class="col-12 col-md-6">
+                                <div class="p-4 rounded-3 bg-dark border border-secondary border-opacity-25">
+                                    <h6 class="fw-bold text-warning mb-3">Banner de Promociones de Temporada</h6>
+                                    <div class="form-check form-switch mb-3">
+                                        <input class="form-check-input" type="checkbox" id="promoSwitch" checked onchange="alert('El banner de promos ha sido actualizado.')">
+                                        <label class="form-check-label text-white" for="promoSwitch">Mostrar Promo 15% OFF en 3+ Noches</label>
+                                    </div>
+                                    <small class="text-body-secondary d-block">Código promo visible: PORTEÑO15</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- JS SCRIPTS -->
+    <script src="../assets/js/plugins.js"></script>
+    <script src="../assets/js/theme.js"></script>
+    <script>
+        // Check if previously logged in this session
+        if (sessionStorage.getItem('adminLoggedIn') === 'true') {
+            document.getElementById('adminLoginOverlay').classList.add('d-none');
+            document.getElementById('adminDashboardContent').classList.remove('d-none');
+        }
+
+        function checkAdminPass() {
+            var pass = document.getElementById('adminPasswordInput').value;
+            // Accepts 'admin', '1234', or 'morenas'
+            if (pass === 'admin' || pass === '1234' || pass === 'morenas') {
+                sessionStorage.setItem('adminLoggedIn', 'true');
+                document.getElementById('loginErrorMsg').classList.add('d-none');
+                document.getElementById('adminLoginOverlay').classList.add('d-none');
+                document.getElementById('adminDashboardContent').classList.remove('d-none');
+            } else {
+                document.getElementById('loginErrorMsg').classList.remove('d-none');
+            }
+        }
+
+        function lockAdminPanel() {
+            sessionStorage.removeItem('adminLoggedIn');
+            location.reload();
+        }
+    </script>
+</body>
+</html>
