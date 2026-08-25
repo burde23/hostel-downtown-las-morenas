@@ -318,3 +318,53 @@ a[title="Burdev."]:hover img {
         padding-bottom: 2rem !important;
     }
 }
+
+
+/* ==========================================================================
+   UNIFIED HERO PROMO CARDS & EXTENDED 100VH MOBILE DISPLAY
+   ========================================================================== */
+
+.hero-promo-card {
+    background: rgba(30, 31, 36, 0.94) !important;
+    border: 1px solid rgba(198, 166, 100, 0.45) !important;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.7) !important;
+    backdrop-filter: blur(12px) !important;
+    max-width: 500px !important;
+    transition: transform 0.3s ease, border-color 0.3s ease !important;
+}
+
+.hero-promo-card:hover {
+    border-color: #C6A664 !important;
+    transform: translateY(-2px) !important;
+}
+
+.hero-promo-card .badge.bg-warning {
+    background-color: #C6A664 !important;
+    color: #121316 !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.05em !important;
+}
+
+@media (max-width: 767.98px) {
+    #hero, 
+    .hero-carousel {
+        height: 100vh !important;
+        min-height: 680px !important;
+    }
+
+    #heroCarousel .hero-caption {
+        height: 100vh !important;
+        min-height: 680px !important;
+        padding-top: 3.5rem !important;
+        padding-bottom: 3.5rem !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+
+    .hero-promo-card {
+        padding: 1.25rem 1.15rem !important;
+        margin-top: 0.5rem !important;
+        margin-bottom: 0.5rem !important;
+    }
+}
